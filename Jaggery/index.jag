@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <title>Dashboard Login</title>
+</head>
+
+<%
+  var config = require("/config.json");
+
+  var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+
+  var websiteVisitors = config.webSiteVisitors;
+  var initialize = require("/js/config/initialization.js");
+  initialize.database("WebsiteVisitors", websiteVisitors);
+
+  var rawLeads = config.rawLeads;
+  initialize.database("RawLeads", rawLeads);
+
+  var salesQualifiedLeads = config.salesQualifiedLeads;
+  initialize.database("SalesQualifiedLeads", salesQualifiedLeads);
+
+  require("js/modules/date.js");
+  var dateJs = require("/js/util/dateFunction.js");
+  var year = dateJs.getYear();
+
+  var lastDate = dateJs.getLastDate();
+  var lastDateString = dateJs.yyyymmdd(lastDate);
+  initialize.dashboardQueryParameters(year, lastDate, lastDateString);
+
+  if(request.getMethod()=="POST"){
+    var userName = request.getParameter("username");
+    var password = request.getParameter("password");
+
+    if(userName=="admin" && password=="admin"){
+      print('<script> location = "websiteVisitors.jag";</script>')
+    }
+  }
+
+%>
+<body>
+  <section>
+    <div>
+      <h1>Login to Dashboard</h1>
+      <form id="form" method="POST">
+        <p><input type="text" name="username" placeholder="Username"></p>
+        <p><input type="password" name="password" placeholder="Password"></p>
+        <p><input type="submit" ></p>
+      </form>
+    </div>
+  </section>
+</body>
+</html>

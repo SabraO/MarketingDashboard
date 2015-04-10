@@ -1,0 +1,197 @@
+{
+  "webSiteVisitors" : {
+    "quarterly" : {
+      "year" : "2014",
+      "quarter" : "1",
+      "total" : "200409",
+      "na" : "56163",
+      "eu" : "68210",
+      "rest" : "76036",
+      "unclassified" : "0"
+    },
+    "cumulative" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "thisWeek" : {
+      "start_date" : "2015-03-22",
+      "end_date" : "2015-03-28",
+      "total" : "63746",
+      "na" : "20754",
+      "eu" : " 25522",
+      "rest" : "17470",
+      "unclassified" : "0"
+    },
+    "lastWeek" : {
+      "start_date" : "2015-03-15",
+      "end_date" : "2015-03-21",
+      "total" : "61263",
+      "na" : "20233",
+      "eu" : " 22817",
+      "rest" : "18213",
+      "unclassified" : "0"
+    },
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    },
+    "ytd" : {
+      "year" : "2015",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "yearly" : {
+      "year" : "2014",
+      "total" : "2192761",
+      "na" : "438294",
+      "eu" : " 869652",
+      "rest" : "884815",
+      "unclassified" : "0"
+    }
+  },
+  "salesQualifiedLeads" : {
+    "quarterly" : {
+      "year" : "2014",
+      "quarter" : "1",
+      "total" : "200409",
+      "na" : "56163",
+      "eu" : "68210",
+      "rest" : "76036",
+      "unclassified" : "0"
+    },
+    "cumulative" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "thisWeek" : {
+      "start_date" : "2015-03-22",
+      "end_date" : "2015-03-28",
+      "total" : "63746",
+      "na" : "20754",
+      "eu" : " 25522",
+      "rest" : "17470",
+      "unclassified" : "0"
+    },
+    "lastWeek" : {
+      "start_date" : "2015-03-15",
+      "end_date" : "2015-03-21",
+      "total" : "61263",
+      "na" : "20233",
+      "eu" : " 22817",
+      "rest" : "18213",
+      "unclassified" : "0"
+    },
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    },
+    "ytd" : {
+      "year" : "2015",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "yearly" : {
+      "year" : "2014",
+      "total" : "2192761",
+      "na" : "438294",
+      "eu" : " 869652",
+      "rest" : "884815",
+      "unclassified" : "0"
+    }
+  },
+  "rawLeads" : {
+    "quarterly" : {
+      "year" : "2014",
+      "quarter" : "1",
+      "total" : "200409",
+      "na" : "56163",
+      "eu" : "68210",
+      "rest" : "76036",
+      "unclassified" : "0"
+    },
+    "cumulative" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "thisWeek" : {
+      "start_date" : "2015-03-22",
+      "end_date" : "2015-03-28",
+      "total" : "63746",
+      "na" : "20754",
+      "eu" : " 25522",
+      "rest" : "17470",
+      "unclassified" : "0"
+    },
+    "lastWeek" : {
+      "start_date" : "2015-03-15",
+      "end_date" : "2015-03-21",
+      "total" : "61263",
+      "na" : "20233",
+      "eu" : " 22817",
+      "rest" : "18213",
+      "unclassified" : "0"
+    },
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    },
+    "ytd" : {
+      "year" : "2015",
+      "end_date" : "2015-03-21",
+      "total" : "729218",
+      "na" : "232883",
+      "eu" : "324331",
+      "rest" : "172004",
+      "unclassified" : "0"
+    },
+    "yearly" : {
+      "year" : "2014",
+      "total" : "2192761",
+      "na" : "438294",
+      "eu" : " 869652",
+      "rest" : "884815",
+      "unclassified" : "0"
+    }
+  }
+}
