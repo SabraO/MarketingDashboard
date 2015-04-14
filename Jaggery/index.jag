@@ -1,51 +1,88 @@
 <!DOCTYPE html>
 <head>
-  <title>Dashboard Login</title>
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WSO2 Marketing Dashboard Login</title>
+
+    <link href="css/style.css" rel="stylesheet">
 </head>
 
 <%
-  var config = require("/config.json");
-
-  var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
-
-  var websiteVisitors = config.webSiteVisitors;
-  var initialize = require("/js/config/initialization.js");
-  initialize.database("WebsiteVisitors", websiteVisitors);
-
-  var rawLeads = config.rawLeads;
-  initialize.database("RawLeads", rawLeads);
-
-  var salesQualifiedLeads = config.salesQualifiedLeads;
-  initialize.database("SalesQualifiedLeads", salesQualifiedLeads);
-
-  require("js/modules/date.js");
-  var dateJs = require("/js/util/dateFunction.js");
-  var year = dateJs.getYear();
-
-  var lastDate = dateJs.getLastDate();
-  var lastDateString = dateJs.yyyymmdd(lastDate);
-  initialize.dashboardQueryParameters(year, lastDate, lastDateString);
-
   if(request.getMethod()=="POST"){
     var userName = request.getParameter("username");
     var password = request.getParameter("password");
 
     if(userName=="admin" && password=="admin"){
+
+      var config = require("/config.json");
+
+      var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+
+      var websiteVisitors = config.webSiteVisitors;
+      var initialize = require("/js/config/initialization.js");
+      initialize.database("WebsiteVisitors", websiteVisitors);
+
+      var rawLeads = config.rawLeads;
+      initialize.database("RawLeads", rawLeads);
+
+      var salesQualifiedLeads = config.salesQualifiedLeads;
+      initialize.database("SalesQualifiedLeads", salesQualifiedLeads);
+
+      require("js/modules/date.js");
+      var dateJs = require("/js/util/dateFunction.js");
+      var year = dateJs.getYear();
+
+      var lastDate = dateJs.getLastDate();
+      var lastDateString = dateJs.yyyymmdd(lastDate);
+      initialize.dashboardQueryParameters(year, lastDate, lastDateString);
+
       print('<script> location = "websiteVisitors.jag";</script>')
     }
   }
 
 %>
 <body>
-  <section>
-    <div>
-      <h1>Login to Dashboard</h1>
-      <form id="form" method="POST">
-        <p><input type="text" name="username" placeholder="Username"></p>
-        <p><input type="password" name="password" placeholder="Password"></p>
-        <p><input type="submit" ></p>
-      </form>
+
+  <div class="wr-modelpopup">
+        <div class="modelpopup-content"><!-- dynamic content --></div>
+        <div class="modelpopup-bg"></div>
+  </div>
+
+  <div class="container col-lg-12 col-md-12 col-sm-12">
+
+        <!-- header -->
+        <header>
+            <div class="row wr-global-header">
+                <div class="col-lg-12 app-logo">
+                  <h2 class="app-title">Marketing Dashboard</h2>
+                </div>
+            </div>
+        </header>
+        <!-- /header -->
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- content -->
+                <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-3 col-centered wr-content wr-login col-centered">
+                    <div>
+                        <h3 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">Sign in </h3>
+                    </div>
+                        <div class="boarder-all ">
+                            <div class="clear"></div>
+                        <div class="block"><span class="padding-double float-left font-large">Sign in to continue</span></div>
+
+                        <div class="wr-input-control padding-double">
+                            <br><br><br>
+                            <form id="form" method="POST">
+                              <p><input type="text" name="username" placeholder="Username"></p>
+                              <p><input type="password" name="password" placeholder="Password"></p>
+                              <p><input type="submit" class="padding-bottom-double"></p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </section>
 </body>
 </html>

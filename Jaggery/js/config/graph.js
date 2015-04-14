@@ -64,7 +64,7 @@ var drawGraphs = function(quarter,leadType,year,previousYear,weeklyData,dateRang
                                       { name: year + ' EU', data: thisYear_eu, stack: 'actual'},
                                       { name: year + ' NA', data: thisYear_na, stack: 'actual'}];
     $(function () {
-        $('#quarterlyComparison').highcharts(getStackedBarChartOptions('Quarterly Comparison', previousYear + ' vs '
+        $('#quarterlyComparison').highcharts(getStackedBarChartOptions(previousYear + ' vs '
                                                                 + year, labels, leadType, quarterlyComparisonSeries ));
     });
 
@@ -88,7 +88,7 @@ var drawGraphs = function(quarter,leadType,year,previousYear,weeklyData,dateRang
                         { name: '2015', data: yearlyComparisonData_This }];
 
     $(function () {
-       $('#yearlyComparison').highcharts(getColumnChartOptions('Yearly Comparison',yearlyLabels,leadType,yearlySeries));
+       $('#yearlyComparison').highcharts(getColumnChartOptions(' ', yearlyLabels,leadType,yearlySeries));
     });
 
     //Forecast vs Cumulative
@@ -126,7 +126,7 @@ var getForecastVsCumulativeChartOptions = function (quarter,leadType,cumulativeQ
 
     return {
         title: {
-            text: 'Forecast vs Cumulative for ' + regionType + ' ' + leadType
+            text: regionType + ' ' + leadType
         },
         subtitle: {
             text: 'Q' + quarter
@@ -184,7 +184,7 @@ var getForecastVsCumulativeChartOptions = function (quarter,leadType,cumulativeQ
     };
 };
 
-var getStackedBarChartOptions = function(title,subtitle,categories,leadType,series){
+var getStackedBarChartOptions = function(title,categories,leadType,series){
 
     return {
 
@@ -195,10 +195,6 @@ var getStackedBarChartOptions = function(title,subtitle,categories,leadType,seri
         title: {
             text: title
         },
-        subtitle: {
-            text: subtitle
-        },
-
         xAxis: {
             categories: categories
         },

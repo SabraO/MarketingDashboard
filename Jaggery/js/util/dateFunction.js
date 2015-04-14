@@ -1,9 +1,11 @@
 var getLastDate  = function () {
-    return Date.today().next().saturday();
+    return new Date(2015,02,28);
+    //return Date.today().next().saturday();
 };
 
 var getYear = function(){
-    return Date.today().next().saturday().getFullYear().toString();
+    return new Date(2015,02,28).getFullYear().toString();
+    //return Date.today().next().saturday().getFullYear().toString();
 };
 
 var yyyymmdd = function(date) {
@@ -36,3 +38,61 @@ var weekRangeContainsEOQ = function(startDate,endDate,year){
     }
     return -1;
 };
+
+var getDateRange = function () {
+    var dateRanges = [];
+    var weeksLastDate = getLastDate();
+
+    //Date Range Calculation
+    /*for(var i =0; i < 5;i++){
+        var dateRange = {
+            "firstDate" : "",
+            "lastDate" : ""
+        };
+
+        var date_first = new Date();
+        date_first.setDate(weeksLastDate.getDate() - 6 - (7*i));
+        var dateFirstString = yyyymmdd(date_first);
+        dateRange.firstDate = dateFirstString;
+
+        var date_last = new Date();
+        date_last.setDate(weeksLastDate.getDate() - (7*i));
+        var dateLastString = yyyymmdd(date_last);
+        dateRange.lastDate = dateLastString;
+
+        dateRanges.push(dateRange);
+    }
+    */
+
+    var dateRange = {
+        "firstDate" : "2015-03-22",
+        "lastDate" : "2015-03-28"
+    };
+    dateRanges.push(dateRange);
+
+    var dateRange = {
+        "firstDate" : "2015-03-15",
+        "lastDate" : "2015-03-21"
+    };
+    dateRanges.push(dateRange);
+
+    var dateRange = {
+        "firstDate" : "2015-03-08",
+        "lastDate" : "2015-03-14"
+    };
+    dateRanges.push(dateRange);
+
+    var dateRange = {
+        "firstDate" : "2015-03-01",
+        "lastDate" : "2015-03-07"
+    };
+    dateRanges.push(dateRange);
+
+    var dateRange = {
+        "firstDate" : "2015-02-22",
+        "lastDate" : "2015-02-28"
+    };
+    dateRanges.push(dateRange);
+
+    return dateRanges;
+}

@@ -4,102 +4,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%
-    var config = require("/config.json");
+var config = require("/config.json");
+var leadType = config.webSiteVisitors;
+var databaseType = "WebsiteVisitors";
 
-    var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+include("/dashboardOperations.jag");
 
-    require("js/modules/date.js");
-    var dateJs = require("/js/util/dateFunction.js");
-    var initialization = require("/js/config/initialization.js");
-
-    var websiteVisitors = config.webSiteVisitors;
-    var firstDate, firstDateString, lastDate, lastDateString, previousWeekFirstDate, previousWeekFirstDateString,
-                                        previousWeekLastDate, previousWeekLastDateString, year, previousYear, quarter;
-
-    year = dateJs.getYear();
-
-    lastDate = dateJs.getLastDate();
-    lastDateString = dateJs.yyyymmdd(lastDate);
-
-    var dataManipulation = require("/js/util/dataManipulation.js");
-
-    var prevQuarter;
-
-    if (dateJs.weekRangeContainsEOQ(firstDate, lastDate) == 1) {
-        if (quarter != 1) {
-            prevQuarter = quarter - 1;
-            dataManipulation.setQuarterlyData("WebsiteVisitors", quarter, prevQuarter, year, year, lastDateString);
-        }
-        else {
-            prevQuarter = 4;
-
-            dataManipulation.setYearlyData("WebsiteVisitors", year, previousYear, prevQuarter, lastDateString);
-            dataManipulation.setQuarterlyData("WebsiteVisitors", quarter, prevQuarter, year, previousYear,
-                                                                                                        lastDateString);
-        }
-    }
-
-    //Query dashboard query parameters to get values
-    var dashboardParameters = db.query("SELECT * FROM `DashboardQueryParameters` WHERE `year` = " + year +
-                                                                        " AND `lastDate` = \"" + lastDateString + "\"");
-    previousYear = dashboardParameters[0].previousYear;
-    quarter = dashboardParameters[0].quarter;
-    firstDateString = dashboardParameters[0].firstDate;
-    previousWeekFirstDateString = dashboardParameters[0].prevWeekFirstDate;
-    previousWeekLastDateString = dashboardParameters[0].prevWeekLastDate;
-
-    var dashboardData = dataManipulation.getDashboardData("WebsiteVisitors", websiteVisitors, year, previousYear,
-                    quarter, firstDateString, lastDateString, previousWeekFirstDateString, previousWeekLastDateString);
-
-    //To show in table, get the dashboard data for previous quarters
-    var websiteVisitor_PrevQuarterData = dataManipulation.getPrevQuarterData("WebsiteVisitors", quarter);
-
-    //To display in graphs
-    //WoW Performance - This week and Last 4 weeks (Total 5 weeks)
-    var dateRanges = [];
-
-    var weeksLastDate = dateJs.getLastDate();
-
-    //Date Range Calculation
-    for(var i =0; i < 5;i++){
-         var dateRange = {
-         "firstDate" : "",
-         "lastDate" : ""
-         };
-
-         var date_first = new Date();
-         date_first.setDate(weeksLastDate.getDate() - 6 - (7*i));
-         var dateFirstString = yyyymmdd(date_first);
-         dateRange.firstDate = dateFirstString;
-
-         var date_last = new Date();
-         date_last.setDate(weeksLastDate.getDate() - (7*i));
-         var dateLastString = yyyymmdd(date_last);
-         dateRange.lastDate = dateLastString;
-
-         dateRanges.push(dateRange);
-    }
-
-    var websiteVisitors_weeklyData = dataManipulation.getWeeklyData("WebsiteVisitors");
-
-    //Yearly Comparison
-    var websiteVisitors_yearlyData = dataManipulation.getYearlyData("WebsiteVisitors");
-
-    //Quarterly Comparison
-    var websiteVisitors_QDataThisYear = dataManipulation.getQuarterlyData_ThisYear(websiteVisitor_PrevQuarterData,
-                                                                                                        dashboardData);
-    var websiteVisitors_QDataPrevYear = dataManipulation.getQuarterlyData_PrevYear("WebsiteVisitors");
-
-    //Forecast vs Cumulative
-    var forecast_Quarter = dashboardData.forecast_Quarter;
-    var cumulative_Quarter = dashboardData.cumulative_Quarter;
-
-    var yearD = "" + year;
-    var quarterD = "" + quarter;
-    var previousYearD = "" + previousYear;
 %>
 
 <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Website Visitors</title>
+    <link href="css/style.css"  rel="stylesheet">
+
      <script src="js/modules/jquery-2.1.1.min.js" type="text/javascript"></script>
      <script src="js/modules/highcharts.js" type="text/javascript"></script>
      <script src="js/modules/exporting.js" type="text/javascript"></script>
@@ -119,7 +39,7 @@
                var prevWeekFirstDateString = '<%=previousWeekFirstDateString%>';
                var prevWeekLastDateString = '<%=previousWeekLastDateString%>';
 
-               var previousQuartersData = JSON.parse('<%=websiteVisitor_PrevQuarterData%>');
+               var previousQuartersData = JSON.parse('<%=PrevQuarterData%>');
 
                var tableContent = populateDashboard("Website Visitors",dashboardData,year,quarter,previousYear,
                 firstDateString,lastDateString,prevWeekFirstDateString,prevWeekLastDateString,previousQuartersData);
@@ -130,25 +50,20 @@
 
                //Website Visitors
                //WoW Performance
-               var weeklyData = JSON.parse('<%=websiteVisitors_weeklyData%>');
+               var weeklyData = JSON.parse('<%=weeklyData%>');
                var dateRanges = JSON.parse('<%=dateRanges%>');
                var forecast_Quarter = JSON.parse('<%=forecast_Quarter%>');
 
                 //Quarterly Comparison
-                var qDataThisYear = JSON.parse('<%=websiteVisitors_QDataThisYear%>');
-                var qDataPrevYear = JSON.parse('<%=websiteVisitors_QDataPrevYear%>');
+                var qDataThisYear = JSON.parse('<%=QDataThisYear%>');
+                var qDataPrevYear = JSON.parse('<%=QDataPrevYear%>');
 
                 //Yearly Comparison
-                var yearlyData = JSON.parse('<%=websiteVisitors_yearlyData%>');
+                var yearlyData = JSON.parse('<%=yearlyData%>');
 
                 //Forecast vs Cumulative
                 var forecastQ = JSON.parse('<%=forecast_Quarter%>');
                 var cumulativeQ = JSON.parse('<%=cumulative_Quarter%>');
-
-                var forecastTotal = parseInt(forecastQ.total);
-                var forecastNA = parseInt(forecastQ.na);
-                var forecastEU = parseInt(forecastQ.eu);
-                var forecastREST = parseInt(forecastQ.rest);
 
                 drawGraphs(quarter,"Website Visitors",year,previousYear,weeklyData,dateRanges,forecast_Quarter,
                                                         qDataThisYear,qDataPrevYear,yearlyData,forecastQ,cumulativeQ);
@@ -162,6 +77,9 @@
                 $("#sql").click(function() {
                      location = "salesQualifiedLeads.jag";
                 });
+                $("#logout").click(function() {
+                     location = "index.jag";
+                });
           });
 
      </script>
@@ -169,36 +87,66 @@
 
 <body>
 
-     <div id="wv">Website Visitors</div>
-     <div id="rl">Raw Leads</div>
-     <div id="sql">Sales Qualified Leads</div>
+    <header class="padding-bottom-double">
+        <div class="col-x-small padding-top-double dark-grey-by  padding-left white uppercase padding-bottom-double inline-block  ">Weekly Marketing dashboard</div>
+        <div id="wv" class="link uppercase">Website Vistors </div>
+        <div id="rl" class="link uppercase">Raw Leads</div>
+        <div id="sql" class="link uppercase">Sales Qualified Leads  </div>
+        <div id="logout" class="link uppercase">Log Out </div>
+    </header>
 
-     <div id="dashboard">
-          <table id="table">
+     <div id="content">
+        <div class="col-row overlow-hidden margin-bottom-double">
+            <div class="col-row light-grey-bg padding white uppercase  ">website visitors</div>
+                <div id="dashboard" class="col-row white-bg">
+                    <table id="table">
 
-          </table>
+                    </table>
+                </div>
+            </div>
+        </div>
      </div>
 
-     <br>
-     <div id="WoWPerformanceComparison" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+     <div class="col-row overlow-hidden margin-top-double">
+        <div class="col-row light-grey-bg padding white uppercase  ">WoW Performance</div>
+        <div id="WoWPerformanceComparison" class="col-row white-bg"></div>
+     </div>
 
-     <br>
-     <div id="quarterlyComparison" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+     <div class="col-row overlow-hidden margin-top-double">
+        <div class="col-row light-grey-bg padding white uppercase  ">Quarterly Comparison</div>
+        <div id="quarterlyComparison" class="col-row white-bg"></div>
+     </div>
 
-     <br>
-     <div id="yearlyComparison" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+     <div class="col-row overlow-hidden margin-top-double">
+        <div class="col-row light-grey-bg padding white uppercase  ">Yearly Comparison</div>
+        <div id="yearlyComparison" class="col-row white-bg"></div>
+     </div>
 
-     <br>
-     <div id="forecastVsCumulativeComparison_Total" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
-     <br>
-     <div id="forecastVsCumulativeComparison_NA" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+     <div class="margin-top-double col-row">
+        <div class="col-medium overlow-hidden inline-block margin-right-double">
+            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+            <div id="forecastVsCumulativeComparison_Total" class="col-row white-bg"></div>
+        </div>
 
-     <br>
-     <div id="forecastVsCumulativeComparison_EU" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div class="col-medium overlow-hidden inline-block">
+            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+            <div id="forecastVsCumulativeComparison_NA" class="col-row white-bg"></div>
+        </div>
+     </div>
 
-     <br>
-     <div id="forecastVsCumulativeComparison_REST" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+     <div class="margin-top-double col-row">
+        <div class="col-medium overlow-hidden inline-block margin-right-double">
+            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+            <div id="forecastVsCumulativeComparison_EU" class="col-row white-bg"></div>
+        </div>
+
+        <div class="col-medium overlow-hidden inline-block">
+            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+            <div id="forecastVsCumulativeComparison_REST" class="col-row white-bg"></div>
+        </div>
+     </div>
+
 </body>
 
 </html>
