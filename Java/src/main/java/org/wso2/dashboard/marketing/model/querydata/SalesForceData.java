@@ -1,8 +1,5 @@
 package org.wso2.dashboard.marketing.model.querydata;
 
-/**
- * Created by sabra on 3/3/15.
- */
 public class SalesForceData {
 
 	private String region;

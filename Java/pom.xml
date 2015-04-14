@@ -176,7 +176,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.wso2.dashboard.marketing.publish.data.Application</mainClass>
+                            <mainClass>org.wso2.dashboard.marketing.publish.Application</mainClass>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
