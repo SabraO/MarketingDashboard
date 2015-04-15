@@ -7,20 +7,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class RightWaveResponseData {
 
-	@JsonProperty("startdate")
-	private String startDate;
+	@JsonProperty("startdate") private String startDate;
 
-	@JsonProperty("status")
-	private String status;
+	@JsonProperty("status") private String status;
 
-	@JsonProperty("Api Name")
-	private String apiName;
+	@JsonProperty("Api Name") private String apiName;
 
-	@JsonProperty("output")
-	private RightWaveOutputData output;
+	@JsonProperty("output") private RightWaveOutputData output;
 
-	@JsonProperty("enddate")
-	private String endDate;
+	@JsonProperty("enddate") private String endDate;
 
 	public String getStartDate() {
 		return startDate;
@@ -61,5 +56,5 @@ public class RightWaveResponseData {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	
+
 }

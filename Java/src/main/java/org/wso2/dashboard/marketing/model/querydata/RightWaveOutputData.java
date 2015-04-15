@@ -7,17 +7,13 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class RightWaveOutputData {
 
-	@JsonProperty("ROW")
-	private int row;
+	@JsonProperty("ROW") private int row;
 
-	@JsonProperty("EU")
-	private int eu;
+	@JsonProperty("EU") private int eu;
 
-	@JsonProperty("NA")
-	private int na;
+	@JsonProperty("NA") private int na;
 
-	@JsonProperty("Unknown")
-	private int unclassified;
+	@JsonProperty("Unknown") private int unclassified;
 
 	public int getRow() {
 		return row;

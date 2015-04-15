@@ -43,7 +43,7 @@ public class GoogleAnalyticsAccess {
 	private static final String CLIENT_SECRETS_ID_INITIAL = "Enter";
 	private static final String CLIENT_SECRETS_SECRET_INITIAL = "Enter ";
 	private static final String USER = "user";
-	private static final String ACCOUNT_NAME ="googleanalytics.accountname" ;
+	private static final String ACCOUNT_NAME = "googleanalytics.accountname";
 	private static final String WEB_PROPERTY_NAME = "googleanalytics.webpropertyname";
 	private static final String VIEW_NAME = "googleanalytics.viewname";
 	private static final String QUERY_PREFIX = "ga:";
@@ -67,8 +67,7 @@ public class GoogleAnalyticsAccess {
 		    clientSecrets.getDetails().getClientSecret().startsWith(CLIENT_SECRETS_SECRET_INITIAL)) {
 			log.error("Configure client_secrets.json with the correct Google Analytics Client Id and Secret");
 			System.exit(1);
-		}
-		else{
+		} else {
 			clientId = clientSecrets.getDetails().getClientId();
 			clientSecret = clientSecrets.getDetails().getClientSecret();
 		}
@@ -118,10 +117,10 @@ public class GoogleAnalyticsAccess {
 		List<Webproperty> webPropertiesList = webProperties.getItems();
 
 		if (webPropertiesList.isEmpty()) {
-			log.error("No Web Properties found for Google Analytics Account " + Util.getProperty(ACCOUNT_NAME) );
+			log.error("No Web Properties found for Google Analytics Account " + Util.getProperty(ACCOUNT_NAME));
 		} else {
 
-			log.info("Successfully obtained account id for Account Name " + Util.getProperty(ACCOUNT_NAME) );
+			log.info("Successfully obtained account id for Account Name " + Util.getProperty(ACCOUNT_NAME));
 			for (Webproperty webProperty : webPropertiesList) {
 				if (Util.getProperty(WEB_PROPERTY_NAME).equals(webProperty.getName())) {
 					webPropertyId = webProperty.getId();
@@ -144,7 +143,8 @@ public class GoogleAnalyticsAccess {
 			          " and Web Property: " + Util.getProperty(WEB_PROPERTY_NAME));
 		} else {
 
-			log.info("Successfully obtained web property id for Web Property Name " + Util.getProperty(WEB_PROPERTY_NAME) );
+			log.info("Successfully obtained web property id for Web Property Name " +
+			         Util.getProperty(WEB_PROPERTY_NAME));
 			for (Profile profile : viewsList) {
 				if (Util.getProperty(VIEW_NAME).equals(profile.getName())) {
 					viewId = profile.getId();
@@ -172,7 +172,7 @@ public class GoogleAnalyticsAccess {
 				log.error("No results Found for Metric: " + QUERY_METRIC + " and Dimension: " + dimension);
 			} else {
 
-				log.info("Successfully obtained view id for View Name " + Util.getProperty(VIEW_NAME) );
+				log.info("Successfully obtained view id for View Name " + Util.getProperty(VIEW_NAME));
 				GoogleAnalyticsData data;
 				for (List<String> row : gaData.getRows()) {
 					data = new GoogleAnalyticsData();
@@ -222,7 +222,8 @@ public class GoogleAnalyticsAccess {
 
 		List<GoogleAnalyticsData> continentDataList =
 				executeGAQuery(analytics, viewId, QUERY_CONTINENT_DIMENSION, startDate, endDate);
-		List<GoogleAnalyticsData> countryDataList = executeGAQuery(analytics, viewId, QUERY_COUNTRY_DIMENSION, startDate, endDate);
+		List<GoogleAnalyticsData> countryDataList =
+				executeGAQuery(analytics, viewId, QUERY_COUNTRY_DIMENSION, startDate, endDate);
 
 		List<List<GoogleAnalyticsData>> gaDataList = new ArrayList<List<GoogleAnalyticsData>>();
 

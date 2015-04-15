@@ -6,7 +6,7 @@ public class Application {
 
 	private static final Logger log = Logger.getLogger(Application.class);
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 
 		try {
 			DataPublisher.publishData();

@@ -18,7 +18,7 @@ public class Util {
 		file.close();
 	}
 
-	public static String getProperty(String key){
+	public static String getProperty(String key) {
 		return MAIN_PROPERTIES.getProperty(key);
 	}
 }

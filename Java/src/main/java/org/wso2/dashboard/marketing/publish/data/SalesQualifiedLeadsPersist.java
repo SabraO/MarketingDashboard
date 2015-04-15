@@ -6,12 +6,12 @@ import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
 import java.rmi.RemoteException;
 import java.util.List;
 
-public class SalesQualifiedLeadsPersist implements Leads{
+public class SalesQualifiedLeadsPersist implements Leads {
 
 	@Override public void insertToWeeklyDB(WSO2MarketingDashboardDataServiceStub stub, String startDate, String endDate,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek
-				request = new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek();
+		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek request =
+				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek();
 
 		request.setStart_date(startDate);
 		request.setEnd_date(endDate);
@@ -27,8 +27,8 @@ public class SalesQualifiedLeadsPersist implements Leads{
 	@Override public void insertToQuarterlyDB(WSO2MarketingDashboardDataServiceStub stub, String year, int quarter,
 	                                          List<RegionCount> regionCountList) throws RemoteException {
 
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter
-				request = new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter();
+		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter request =
+				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter();
 
 		request.setYear(year);
 		request.setQuarter(quarter);
@@ -44,8 +44,8 @@ public class SalesQualifiedLeadsPersist implements Leads{
 	@Override public void insertToYearlyDB(WSO2MarketingDashboardDataServiceStub stub, String year,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
 
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear
-				request = new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear();
+		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear request =
+				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear();
 
 		request.setYear(year);
 		request.setTotal_users(regionCountList.get(0).getNoOfUsers());

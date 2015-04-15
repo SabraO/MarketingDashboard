@@ -101,16 +101,16 @@ public class SalesForceAccess {
 
 		List<RegionCount> regionCountList = new ArrayList<RegionCount>();
 
-		addRegionData(Constants.TOTAL,userCountList.get(0), regionCountList);
-		addRegionData(Constants.EU,userCountList.get(1),regionCountList);
-		addRegionData(Constants.NA,userCountList.get(2), regionCountList);
+		addRegionData(Constants.TOTAL, userCountList.get(0), regionCountList);
+		addRegionData(Constants.EU, userCountList.get(1), regionCountList);
+		addRegionData(Constants.NA, userCountList.get(2), regionCountList);
 		addRegionData(Constants.ROW, userCountList.get(3), regionCountList);
 		addRegionData(Constants.UNCLASSIFIED, userCountList.get(4), regionCountList);
 
 		return regionCountList;
 	}
 
-	private static List<Integer> calculateNoOfUsersPerRegion(List<SalesForceData> regionList){
+	private static List<Integer> calculateNoOfUsersPerRegion(List<SalesForceData> regionList) {
 
 		int europeNoOfUsers = 0, usaCanadaNoOfUsers = 0, rowNoOfUsers = 0, unclassifiedNoOfUsers = 0, totalNoOfUsers;
 		String region;
@@ -131,15 +131,15 @@ public class SalesForceAccess {
 
 		return Arrays.asList(totalNoOfUsers, europeNoOfUsers, usaCanadaNoOfUsers, rowNoOfUsers, unclassifiedNoOfUsers);
 	}
-	
-	private static List<SalesForceData> getSalesForceData(String reportId) throws ConnectionException, IOException{
+
+	private static List<SalesForceData> getSalesForceData(String reportId) throws ConnectionException, IOException {
 
 		ConnectorConfig config = createEnterpriseConnection();
 		String sessionId = getSessionId(config);
 		HttpURLConnection urlConn = createHttpUrlConnection(reportId);
 		configureHttpUrlConnection(urlConn, sessionId);
 		return getRegionList(urlConn);
-		
+
 	}
 
 	private static void addRegionData(String region, int noOfUsers, List<RegionCount> dataList) {

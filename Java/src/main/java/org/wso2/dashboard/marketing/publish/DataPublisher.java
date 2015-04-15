@@ -2,8 +2,6 @@ package org.wso2.dashboard.marketing.publish;
 
 import com.sforce.ws.ConnectionException;
 import org.wso2.dashboard.marketing.access.data.GoogleAnalyticsAccess;
-import org.wso2.dashboard.marketing.access.data.RightWaveAccess;
-import org.wso2.dashboard.marketing.access.data.SalesForceAccess;
 import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
 import org.wso2.dashboard.marketing.model.DateRange;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;

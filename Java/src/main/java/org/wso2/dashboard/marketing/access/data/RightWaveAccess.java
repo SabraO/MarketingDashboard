@@ -32,13 +32,14 @@ public class RightWaveAccess {
 		return new HttpPost(url);
 	}
 
-	private static void configureHttpPostRequest(HttpPost post,String startDate, String endDate)
-																				throws UnsupportedEncodingException {
+	private static void configureHttpPostRequest(HttpPost post, String startDate, String endDate)
+			throws UnsupportedEncodingException {
 		post.setHeader(Constants.USER_AGENT_HEADER, Constants.USER_AGENT);
 
 		List<org.apache.http.NameValuePair> urlParameters = new ArrayList<org.apache.http.NameValuePair>();
-		urlParameters.add(new BasicNameValuePair(REQUEST_TYPE, "{ \"startdate\": \"" + startDate + "\", \"enddate\":\"" +
-		                                                                                            endDate + "\" }"));
+		urlParameters
+				.add(new BasicNameValuePair(REQUEST_TYPE, "{ \"startdate\": \"" + startDate + "\", \"enddate\":\"" +
+				                                          endDate + "\" }"));
 
 		post.setEntity(new UrlEncodedFormEntity(urlParameters));
 	}
@@ -57,19 +58,19 @@ public class RightWaveAccess {
 
 		List<RegionCount> regionCountList = new ArrayList<RegionCount>();
 
-		addRegionData(Constants.TOTAL,userCountList.get(0), regionCountList);
-		addRegionData(Constants.EU,userCountList.get(1),regionCountList);
-		addRegionData(Constants.NA,userCountList.get(2), regionCountList);
+		addRegionData(Constants.TOTAL, userCountList.get(0), regionCountList);
+		addRegionData(Constants.EU, userCountList.get(1), regionCountList);
+		addRegionData(Constants.NA, userCountList.get(2), regionCountList);
 		addRegionData(Constants.ROW, userCountList.get(3), regionCountList);
 		addRegionData(Constants.UNCLASSIFIED, userCountList.get(4), regionCountList);
 
 		return regionCountList;
 	}
 
-	private static List<Integer> calculateNoOfUsersPerRegion(RightWaveResponseData responseData){
-		int europeNoOfUsers= responseData.getOutput().getEu();
-		int usaCanadaNoOfUsers= responseData.getOutput().getNa();
-		int rowNoOfUsers= responseData.getOutput().getRow();
+	private static List<Integer> calculateNoOfUsersPerRegion(RightWaveResponseData responseData) {
+		int europeNoOfUsers = responseData.getOutput().getEu();
+		int usaCanadaNoOfUsers = responseData.getOutput().getNa();
+		int rowNoOfUsers = responseData.getOutput().getRow();
 		int unclassifiedNoOfUsers = responseData.getOutput().getUnclassified();
 
 		int totalNoOfUsers = rowNoOfUsers + europeNoOfUsers + usaCanadaNoOfUsers + unclassifiedNoOfUsers;
@@ -80,7 +81,7 @@ public class RightWaveAccess {
 	private static StringBuilder getRightWaveJSONResponse(String startDate, String endDate) throws IOException {
 
 		HttpPost post = createHttpPostRequest();
-		configureHttpPostRequest(post,startDate,endDate);
+		configureHttpPostRequest(post, startDate, endDate);
 		HttpResponse response = executePostRequest(post);
 
 		BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
