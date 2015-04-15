@@ -1,3 +1,10 @@
+//Initialize the database
+var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+
+var getDatabase = function () {
+    return db;
+};
+
 var database = function(databaseType, leadType){
 
     //1.1 - quarterly data
@@ -112,3 +119,17 @@ var dashboardQueryParameters = function(year,lastDate,lastDateString) {
                                                                                 previousWeekLastDateString + "\")");
     }
 };
+
+var yyyymmdd = function(date) {
+
+    var yyyy = date.getFullYear().toString();
+    var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+    var dd  = date.getDate().toString();
+
+    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+};
+
+var getQNumforDate = function(date){
+    return Math.floor((date.getMonth() + 3) / 3);
+};
+

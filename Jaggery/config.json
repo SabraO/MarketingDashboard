@@ -37,15 +37,6 @@
       "rest" : "18213",
       "unclassified" : "0"
     },
-    "forecast" : {
-      "year" : "2015",
-      "quarter" : "1",
-      "total" : "813969",
-      "na" : "213759",
-      "eu" : " 405210",
-      "rest" : "195000",
-      "unclassified" : "0"
-    },
     "ytd" : {
       "year" : "2015",
       "end_date" : "2015-03-21",
@@ -102,15 +93,6 @@
       "rest" : "18213",
       "unclassified" : "0"
     },
-    "forecast" : {
-      "year" : "2015",
-      "quarter" : "1",
-      "total" : "813969",
-      "na" : "213759",
-      "eu" : " 405210",
-      "rest" : "195000",
-      "unclassified" : "0"
-    },
     "ytd" : {
       "year" : "2015",
       "end_date" : "2015-03-21",
@@ -165,15 +147,6 @@
       "na" : "20233",
       "eu" : " 22817",
       "rest" : "18213",
-      "unclassified" : "0"
-    },
-    "forecast" : {
-      "year" : "2015",
-      "quarter" : "1",
-      "total" : "813969",
-      "na" : "213759",
-      "eu" : " 405210",
-      "rest" : "195000",
       "unclassified" : "0"
     },
     "ytd" : {

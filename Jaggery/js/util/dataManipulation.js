@@ -11,15 +11,17 @@ var getColumnData = function(queryResult){
         "unclassified" : 0
     };
 
-    var total = queryResult[0].total_users;
-    var na = queryResult[0].na_users;
-    var eu = queryResult[0].eu_users;
-    var rest = queryResult[0].row_users;
-    var unclassified = queryResult[0].unclassified_users;
+    var total, na, eu, rest, unclassified, naPer, euPer, restPer;
 
-    var naPer = (na/total) * 100;
-    var euPer = (eu/total) * 100;
-    var restPer = (rest/total) * 100;
+    total = queryResult[0].total_users;
+    na = queryResult[0].na_users;
+    eu = queryResult[0].eu_users;
+    rest = queryResult[0].row_users;
+    unclassified = queryResult[0].unclassified_users;
+
+    naPer = (na/total) * 100;
+    euPer = (eu/total) * 100;
+    restPer = (rest/total) * 100;
 
     columnData.total = total;
     columnData.na = na;
@@ -46,10 +48,12 @@ var getCalculatedData = function(queryResult1,queryResult2){
         "unclassified" : 0
     };
 
-    var total = ( (queryResult1[0].total_users - queryResult2[0].total_users)/ queryResult2[0].total_users ) * 100;
-    var na = ( (queryResult1[0].na_users - queryResult2[0].na_users)/ queryResult2[0].na_users ) * 100;
-    var eu = ( (queryResult1[0].eu_users - queryResult2[0].eu_users)/ queryResult2[0].eu_users ) * 100;
-    var rest = ( (queryResult1[0].row_users - queryResult2[0].row_users)/ queryResult2[0].row_users ) * 100;
+    var total, na, eu, rest;
+
+    total = ( (queryResult1[0].total_users - queryResult2[0].total_users)/ queryResult2[0].total_users ) * 100;
+    na = ( (queryResult1[0].na_users - queryResult2[0].na_users)/ queryResult2[0].na_users ) * 100;
+    eu = ( (queryResult1[0].eu_users - queryResult2[0].eu_users)/ queryResult2[0].eu_users ) * 100;
+    rest = ( (queryResult1[0].row_users - queryResult2[0].row_users)/ queryResult2[0].row_users ) * 100;
 
     columnData.total = total;
     columnData.na = na;
@@ -60,7 +64,8 @@ var getCalculatedData = function(queryResult1,queryResult2){
 };
 
 var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,firstDateString,lastDateString,
-                                                            previousWeekFirstDateString, previousWeekLastDateString){
+                                                            previousWeekFirstDateString, previousWeekLastDateString,
+                                                                            quarterlyForecast){
 
     var dashboardData = {
         "prevYear_Quarter" : {},
@@ -142,7 +147,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
     dashboardData.prevYear_total = getColumnData(queryResult8);
 
     //5 - Forecast
-    var forecast = leadType.forecast;
+    var forecast = quarterlyForecast;
     var forecastnaPer = (forecast.na/forecast.total) * 100;
     var forecasteuPer = (forecast.eu/forecast.total) * 100;
     var forecastrestPer = (forecast.rest/forecast.total) * 100;
@@ -164,10 +169,12 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
     dashboardData.WoWGrowth = getCalculatedData(queryResult2,queryResult5);
 
     //7 - QTD vs Forecast
-    var total = (queryResult4[0].total_users/forecast.total) * 100;
-    var na = (queryResult4[0].na_users/forecast.na) * 100;
-    var eu = (queryResult4[0].eu_users/forecast.eu) * 100;
-    var rest = (queryResult4[0].row_users/forecast.rest) * 100;
+    var total, na, eu, rest;
+
+    total = (queryResult4[0].total_users/forecast.total) * 100;
+    na = (queryResult4[0].na_users/forecast.na) * 100;
+    eu = (queryResult4[0].eu_users/forecast.eu) * 100;
+    rest = (queryResult4[0].row_users/forecast.rest) * 100;
 
     dashboardData.qtdVsForecast = {
         "total" : total,
@@ -285,17 +292,30 @@ var getPrevQuarterData = function(databaseType,quarter){
     if(quarter!=1){
         var queryResult;
         var previousQuarterData = {
-            "previousYear" : {},
-            "thisYear" : {}
+            "previousYear" : {
+                "year" : "",
+                "quarter" : 0,
+                "columnData" : {}
+            },
+            "thisYear" : {
+                "year" : "",
+                "quarter" : 0,
+                "columnData" : {}
+            }
         };
         for(var i = 1; i < quarter;i++){
             queryResult = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + previousYear +
                                                                                             " AND `quarter` = " + i);
-            previousQuarterData.previousYear = getColumnData(queryResult[0]);
+
+            previousQuarterData.previousYear.year = previousYear;
+            previousQuarterData.previousYear.quarter = i;
+            previousQuarterData.previousYear.columnData = getColumnData(queryResult[0]);
 
             queryResult = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + year +
                                                                                             " AND `quarter` = " + i);
-            previousQuarterData.thisYear = getColumnData(queryResult[0]);
+            previousQuarterData.thisYear.year = year;
+            previousQuarterData.thisYear.quarter = i;
+            previousQuarterData.thisYear.columnData = getColumnData(queryResult[0]);
 
             previousQuartersData.push(previousQuarterData);
         }

@@ -41,8 +41,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'>Total</td>";
     for(var k=0; k< previousQuartersData.length; k++){
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[k].previousYear.total_users) + "</td>";
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[k].thisYear.total_users) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[k].previousYear.columnData.total) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[k].thisYear.columnData.total) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + numberWithCommas(dashboardData.prevYear_Quarter.total) + "</td>";
@@ -63,8 +63,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'>US & Canada</td>";
     for(var i=0; i< previousQuartersData.length; i++){
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[i].previousYear.na_users) + "</td>";
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[i].thisYear.na_users) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[i].previousYear.columnData.na) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[i].thisYear.columnData.na) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + numberWithCommas(dashboardData.prevYear_Quarter.na) + "</td>";
@@ -85,8 +85,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'><b>%US & Canada</b></td>";
     for(var l=0; l< previousQuartersData.length; l++){
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[l].previousYear.naPer) + "</td>";
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[l].thisYear.naPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[l].previousYear.columnData.naPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[l].thisYear.columnData.naPer) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(dashboardData.prevYear_Quarter.naPer) + "</td>";
@@ -107,8 +107,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'>EU</td>";
     for(var p=0; p< previousQuartersData.length; p++){
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[p].previousYear.eu) + "</td>";
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[p].thisYear.eu) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[p].previousYear.columnData.eu) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[p].thisYear.columnData.eu) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + numberWithCommas(dashboardData.prevYear_Quarter.eu) + "</td>";
@@ -129,8 +129,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'><b>%EU</b></td>";
     for(var q=0; q< previousQuartersData.length; q++){
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[q].previousYear.euPer) + "</td>";
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[q].thisYear.euPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[q].previousYear.columnData.euPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[q].thisYear.columnData.euPer) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(dashboardData.prevYear_Quarter.euPer) + "</td>";
@@ -151,8 +151,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'>Rest</td>";
     for(var n=0; n< previousQuartersData.length; n++){
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[n].previousYear.rest) + "</td>";
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[n].thisYear.rest) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[n].previousYear.columnData.rest) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[n].thisYear.columnData.rest) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + numberWithCommas(dashboardData.prevYear_Quarter.rest) + "</td>";
@@ -173,8 +173,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'><b>%Rest</b></td>";
     for(var r=0; r< previousQuartersData.length; r++){
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[r].previousYear.restPer) + "</td>";
-        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[r].thisYear.restPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[r].previousYear.columnData.restPer) + "</td>";
+        tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(previousQuartersData[r].thisYear.columnData.restPer) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + formatToTwoDecimalPlaces(dashboardData.prevYear_Quarter.restPer) + "</td>";
@@ -195,8 +195,8 @@ var populateDashboard = function(title,dashboardData,year,quarter,previousYear,f
     tableContent += "<tr>";
     tableContent += "<td class='table-boader'>Unclassified</td>";
     for(var h=0; h< previousQuartersData.length; h++){
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[h].previousYear.unclassified) + "</td>";
-        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[h].thisYear.unclassified) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[h].previousYear.columnData.unclassified) + "</td>";
+        tableContent += "<td class='table-boader'>" + numberWithCommas(previousQuartersData[h].thisYear.columnData.unclassified) + "</td>";
     }
 
     tableContent += "<td class='table-boader'>" + numberWithCommas(dashboardData.prevYear_Quarter.unclassified) + "</td>";

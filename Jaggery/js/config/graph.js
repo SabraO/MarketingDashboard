@@ -15,7 +15,6 @@ var drawGraphs = function(quarter,leadType,year,previousYear,weeklyData,dateRang
         data_na.push(weeklyData[i].na_users);
         data_eu.push(weeklyData[i].eu_users);
         data_rest.push(weeklyData[i].row_users);
-
         forecast_total.push(forecast_Quarter.total/noOfWeeksinQ);
         forecast_na.push(forecast_Quarter.na/noOfWeeksinQ);
         forecast_eu.push(forecast_Quarter.eu/noOfWeeksinQ);

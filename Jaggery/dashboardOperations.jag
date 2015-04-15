@@ -1,5 +1,5 @@
 <%
-    var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+    //var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
 
     require("js/modules/date.js");
     var dateJs = require("/js/util/dateFunction.js");
@@ -33,6 +33,7 @@
     }
 
     //Query dashboard query parameters to get values
+    var db = initialization.getDatabase();
     var dashboardParameters = db.query("SELECT * FROM `DashboardQueryParameters` WHERE `year` = " + year +
     " AND `lastDate` = \"" + lastDateString + "\"");
     previousYear = dashboardParameters[0].previousYear;
@@ -41,8 +42,10 @@
     previousWeekFirstDateString = dashboardParameters[0].prevWeekFirstDate;
     previousWeekLastDateString = dashboardParameters[0].prevWeekLastDate;
 
-    var dashboardData = dataManipulation.getDashboardData(databaseType, leadType, year, previousYear,
-            quarter, firstDateString, lastDateString, previousWeekFirstDateString, previousWeekLastDateString);
+    var dashboardData;
+
+    dashboardData = dataManipulation.getDashboardData(databaseType, leadType, year, previousYear,
+            quarter, firstDateString, lastDateString, previousWeekFirstDateString, previousWeekLastDateString,quarterlyForecast);
 
     //To show in table, get the dashboard data for previous quarters
     var PrevQuarterData = dataManipulation.getPrevQuarterData(databaseType, quarter);

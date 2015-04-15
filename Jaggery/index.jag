@@ -16,10 +16,9 @@
 
       var config = require("/config.json");
 
-      var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+      var initialize = require("/js/config/initialization.js");
 
       var websiteVisitors = config.webSiteVisitors;
-      var initialize = require("/js/config/initialization.js");
       initialize.database("WebsiteVisitors", websiteVisitors);
 
       var rawLeads = config.rawLeads;
@@ -35,6 +34,8 @@
       var lastDate = dateJs.getLastDate();
       var lastDateString = dateJs.yyyymmdd(lastDate);
       initialize.dashboardQueryParameters(year, lastDate, lastDateString);
+
+      session.put("active", "true");
 
       print('<script> location = "websiteVisitors.jag";</script>')
     }

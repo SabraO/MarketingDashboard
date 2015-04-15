@@ -1,0 +1,35 @@
+{
+  "webSiteVisitors" : {
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    }
+  },
+  "salesQualifiedLeads" : {
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    }
+  },
+  "rawLeads" : {
+    "forecast" : {
+      "year" : "2015",
+      "quarter" : "1",
+      "total" : "813969",
+      "na" : "213759",
+      "eu" : " 405210",
+      "rest" : "195000",
+      "unclassified" : "0"
+    }
+  }
+}

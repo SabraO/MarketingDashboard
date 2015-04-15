@@ -4,11 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%
-var config = require("/config.json");
-var leadType = config.webSiteVisitors;
-var databaseType = "WebsiteVisitors";
+    if(session.get("active")=="true") {
+        var config = require("/config.json");
+        var quarterlyForecastConfig = require("/quarterlyForecastConfig.json");
 
-include("/dashboardOperations.jag");
+        var leadType = config.webSiteVisitors;
+        var databaseType = "WebsiteVisitors";
+        var quarterlyForecast = quarterlyForecastConfig.webSiteVisitors.forecast;
+
+        include("/dashboardOperations.jag");
+    }
 
 %>
 
@@ -89,7 +94,7 @@ include("/dashboardOperations.jag");
 
     <header class="padding-bottom-double">
         <div class="col-x-small padding-top-double dark-grey-by  padding-left white uppercase padding-bottom-double inline-block  ">Weekly Marketing dashboard</div>
-        <div id="wv" class="link uppercase">Website Vistors </div>
+        <div id="wv" class="link uppercase">Website Visitors </div>
         <div id="rl" class="link uppercase">Raw Leads</div>
         <div id="sql" class="link uppercase">Sales Qualified Leads  </div>
         <div id="logout" class="link uppercase">Log Out </div>
