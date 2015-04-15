@@ -2,6 +2,8 @@ package org.wso2.dashboard.marketing.publish;
 
 import com.sforce.ws.ConnectionException;
 import org.wso2.dashboard.marketing.access.data.GoogleAnalyticsAccess;
+import org.wso2.dashboard.marketing.access.data.RightWaveAccess;
+import org.wso2.dashboard.marketing.access.data.SalesForceAccess;
 import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
 import org.wso2.dashboard.marketing.model.DateRange;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
@@ -93,9 +95,9 @@ public class DataPublisher {
 
 	private static void setLeadData(String startDate, String endDate, String reportId)
 			throws IOException, GeneralSecurityException, ConnectionException {
-		//rawLeads = RightWaveAccess.getNoOfUsersPerRegion(startDate, endDate);
+		rawLeads = RightWaveAccess.getNoOfUsersPerRegion(startDate, endDate);
 		websiteVisitors = GoogleAnalyticsAccess.getNoOfUsersPerRegion(startDate, endDate);
-		//salesQualifiedLeads = SalesForceAccess.getNoOfUsersPerRegion(reportId);
+		salesQualifiedLeads = SalesForceAccess.getNoOfUsersPerRegion(reportId);
 	}
 
 	private static void saveYearlyData(int year) throws RemoteException {
@@ -112,8 +114,8 @@ public class DataPublisher {
 
 	private static void saveWeeklyData(String startDate, String endDate) throws RemoteException {
 		wvPersist.insertToWeeklyDB(stub, startDate, endDate, websiteVisitors);
-		//rlPersist.insertToWeeklyDB(stub, startDate, endDate, rawLeads);
-		//sqlPersist.insertToWeeklyDB(stub, startDate, endDate, salesQualifiedLeads);
+		rlPersist.insertToWeeklyDB(stub, startDate, endDate, rawLeads);
+		sqlPersist.insertToWeeklyDB(stub, startDate, endDate, salesQualifiedLeads);
 	}
 
 }
