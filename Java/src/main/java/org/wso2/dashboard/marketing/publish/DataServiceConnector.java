@@ -1,6 +1,7 @@
 package org.wso2.dashboard.marketing.publish;
 
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
@@ -11,8 +12,10 @@ import org.apache.rampart.RampartMessageData;
 import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
 import org.wso2.dashboard.marketing.util.Util;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class DataServiceConnector {
@@ -28,7 +31,8 @@ public class DataServiceConnector {
 	private static final String PASSWORD = "admin";
 	private static final String POLICY_FILE_PATH = "policyfile.path";
 
-	public static WSO2MarketingDashboardDataServiceStub createConnection() throws Exception {
+	public static WSO2MarketingDashboardDataServiceStub createConnection()
+			throws AxisFault, FileNotFoundException, XMLStreamException {
 
 		String epr = Util.getProperty(DATASERVICE_EPR);
 
@@ -50,7 +54,7 @@ public class DataServiceConnector {
 
 	}
 
-	private static Policy loadPolicy(String path) throws Exception {
+	private static Policy loadPolicy(String path) throws FileNotFoundException, XMLStreamException {
 		InputStream resource = new FileInputStream(path);
 		StAXOMBuilder builder = new StAXOMBuilder(resource);
 		return PolicyEngine.getPolicy(builder.getDocumentElement());

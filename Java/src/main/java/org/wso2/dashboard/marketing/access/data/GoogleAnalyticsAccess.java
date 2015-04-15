@@ -13,8 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.analytics.Analytics;
 import com.google.api.services.analytics.AnalyticsScopes;
 import com.google.api.services.analytics.model.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
 import org.wso2.dashboard.marketing.model.querydata.GoogleAnalyticsData;
 import org.wso2.dashboard.marketing.util.Constants;
@@ -37,6 +36,8 @@ public class GoogleAnalyticsAccess {
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static FileDataStoreFactory dataStoreFactory;
 	private static HttpTransport httpTransport;
+	private static String clientId;
+	private static String clientSecret;
 
 	private static final String CLIENT_SECRETS_JSON_FILE_PATH = "clientsecrets.path";
 	private static final String CLIENT_SECRETS_ID_INITIAL = "Enter";
@@ -54,7 +55,7 @@ public class GoogleAnalyticsAccess {
 	private static final String CANADA = "Canada";
 	private static final String US = "United States";
 
-	private static Log log = LogFactory.getLog(GoogleAnalyticsAccess.class);
+	private static Logger log = Logger.getLogger(GoogleAnalyticsAccess.class);
 
 	private static Credential authorizeUser() throws IOException {
 
@@ -64,9 +65,12 @@ public class GoogleAnalyticsAccess {
 				GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(fileInputStream));
 		if (clientSecrets.getDetails().getClientId().startsWith(CLIENT_SECRETS_ID_INITIAL) ||
 		    clientSecrets.getDetails().getClientSecret().startsWith(CLIENT_SECRETS_SECRET_INITIAL)) {
-			log.error("Enter Client ID and Secret from https://code.google.com/apis/console/?api=analytics " +
-			          "into Wso2MarketingDashboard/src/main/resources/client_secrets.json");
+			log.error("Configure client_secrets.json with the correct Google Analytics Client Id and Secret");
 			System.exit(1);
+		}
+		else{
+			clientId = clientSecrets.getDetails().getClientId();
+			clientSecret = clientSecrets.getDetails().getClientSecret();
 		}
 		GoogleAuthorizationCodeFlow flow =
 				new GoogleAuthorizationCodeFlow.Builder(httpTransport, JSON_FACTORY, clientSecrets,
@@ -90,9 +94,10 @@ public class GoogleAnalyticsAccess {
 		List<Account> accountsList = accounts.getItems();
 
 		if (accountsList.isEmpty()) {
-			log.error("No accounts found");
+			log.error("No accounts found for Client Id: " + clientId + " and Client Secret: " + clientSecret);
 		} else {
 
+			log.info("Successfully authorized user for Client Id: " + clientId + " and Client Secret: " + clientSecret);
 			for (Account account : accountsList) {
 				if (Util.getProperty(ACCOUNT_NAME).equals(account.getName())) {
 					accountId = account.getId();
@@ -113,9 +118,10 @@ public class GoogleAnalyticsAccess {
 		List<Webproperty> webPropertiesList = webProperties.getItems();
 
 		if (webPropertiesList.isEmpty()) {
-			log.error("No Web Properties found");
+			log.error("No Web Properties found for Google Analytics Account " + Util.getProperty(ACCOUNT_NAME) );
 		} else {
 
+			log.info("Successfully obtained account id for Account Name " + Util.getProperty(ACCOUNT_NAME) );
 			for (Webproperty webProperty : webPropertiesList) {
 				if (Util.getProperty(WEB_PROPERTY_NAME).equals(webProperty.getName())) {
 					webPropertyId = webProperty.getId();
@@ -134,9 +140,11 @@ public class GoogleAnalyticsAccess {
 		List<Profile> viewsList = views.getItems();
 
 		if (viewsList.isEmpty()) {
-			log.error("No profiles found");
+			log.error("No views found for Google Analytics Account: " + Util.getProperty(ACCOUNT_NAME) +
+			          " and Web Property: " + Util.getProperty(WEB_PROPERTY_NAME));
 		} else {
 
+			log.info("Successfully obtained web property id for Web Property Name " + Util.getProperty(WEB_PROPERTY_NAME) );
 			for (Profile profile : viewsList) {
 				if (Util.getProperty(VIEW_NAME).equals(profile.getName())) {
 					viewId = profile.getId();
@@ -154,14 +162,17 @@ public class GoogleAnalyticsAccess {
 		List<GoogleAnalyticsData> dataList = new ArrayList<GoogleAnalyticsData>();
 
 		if (viewId == null) {
-			log.error("No profiles found.");
+			log.error("No views found for Account: " + Util.getProperty(ACCOUNT_NAME) + ", Web Property: " +
+			          Util.getProperty(WEB_PROPERTY_NAME) + " and View: " + Util.getProperty(VIEW_NAME));
 		} else {
 			GaData gaData = analytics.data().ga().get(QUERY_PREFIX + viewId, startDate, endDate, QUERY_METRIC)
 			                         .setDimensions(QUERY_PREFIX + dimension).setMaxResults(200).execute();
 
 			if (gaData.getRows() == null || gaData.getRows().isEmpty()) {
-				log.error("No results Found.");
+				log.error("No results Found for Metric: " + QUERY_METRIC + " and Dimension: " + dimension);
 			} else {
+
+				log.info("Successfully obtained view id for View Name " + Util.getProperty(VIEW_NAME) );
 				GoogleAnalyticsData data;
 				for (List<String> row : gaData.getRows()) {
 					data = new GoogleAnalyticsData();

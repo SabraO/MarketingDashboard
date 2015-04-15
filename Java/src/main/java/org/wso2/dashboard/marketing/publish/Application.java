@@ -1,18 +1,17 @@
 package org.wso2.dashboard.marketing.publish;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 public class Application {
 
-	private static Log log = LogFactory.getLog(Application.class);
+	private static final Logger log = Logger.getLogger(Application.class);
 
 	public static void main(String[] args){
 
 		try {
 			DataPublisher.publishData();
 		} catch (Exception e) {
-			log.warn(e);
+			log.error(e.getMessage());
 		}
 
 	}
