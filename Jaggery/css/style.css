@@ -250,7 +250,7 @@ h3{font-size:24px;  line-height:Auto; color:#373737;font-weight: normal  ; }
 	 Main
     _____________________________________________________________________________  */
 
-header{background-color: #3a9ecf; height: 50px; overflow: hidden;}
+header{background-color: #3a9ecf; height: 34px; overflow: hidden;}
 .link{    color: #fff;  display: inline-block;  height: 50px; padding-left: 20px;  padding-right: 20px;
     padding-top: 20px;}
 .link:hover{    color: #fff;  background-color: #076b9c;}
@@ -270,7 +270,14 @@ header{background-color: #3a9ecf; height: 50px; overflow: hidden;}
 }
 
 .table-boader{ border: 1px solid #ccc; padding:10px 0px  10px 10px;}
-.table-title{background-color: #004979; color: #ffffff; font-size: 16px; padding:10px 0px  10px 10px; border: 1px solid #ccc; text-transform: uppercase;}
+.table-title{background-color: #004979;
+    border: 1px solid #ccc;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 19px;
+    padding: 10px 0 10px 10px;
+    text-transform: uppercase;}
 .table{width: 98%;}
 .wr-global-header { background: none repeat scroll 0 0 #282828;
     height: 50px;
@@ -336,10 +343,11 @@ h2.app-title {
 .col-row{width:100%;  }
 .col-x-large{width:95%; }
 .col-large{width:75%; }
-.col-medium{width:49.3%; }
+.col-medium{width:48.3%; }
 .col-small{width:25%; }
-.col-x-small{width:15%; }
+.col-x-small{width:25%; }
 .overlow-hidden{overflow: hidden;}
+.overflow-x{overflow-x:scroll; }
 /*  ____________________________________________________________________________
 
 	 padding-margin

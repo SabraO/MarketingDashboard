@@ -87,64 +87,111 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
     //1 - Quarter
     var queryResult1 = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + previousYear
                                                                                         +" AND `quarter`= " + quarter);
-    dashboardData.prevYear_Quarter = getColumnData(queryResult1);
-
+    try {
+        dashboardData.prevYear_Quarter = getColumnData(queryResult1);
+    }
+    catch(error){
+        throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + previousYear + " and quarter " + quarter);
+    }
     //3 - This Week
     var queryResult2 = db.query("SELECT * FROM `" + databaseType + "_Weekly` WHERE `start_date` = \"" + firstDateString
                                                                     + "\" AND `end_date` = \"" + lastDateString + "\"");
-    dashboardData.thisWeek = getColumnData(queryResult2);
+    try {
+        dashboardData.thisWeek = getColumnData(queryResult2);
+    }
+    catch(error){
+        throw new Error("Check if database " + databaseType + "_Weekly contains record for start date " + firstDateString +
+                                                                                " and last date " + lastDateString);
+    }
 
     //2 - Cumulative
     var queryResult3 = db.query("SELECT * FROM `" + databaseType + "_CumulativeQuarterly` WHERE `end_date` = \"" +
                                 previousWeekLastDateString + "\" AND `year` = " + year + " AND `quarter` = " + quarter);
 
     if(queryResult3.length!=0) {
-        total_users = queryResult2[0].total_users + queryResult3[0].total_users;
-        eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
-        na_users = queryResult2[0].na_users + queryResult3[0].na_users;
-        row_users = queryResult2[0].row_users + queryResult3[0].row_users;
-        unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
+        try{
+            total_users = queryResult2[0].total_users + queryResult3[0].total_users;
+            eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
+            na_users = queryResult2[0].na_users + queryResult3[0].na_users;
+            row_users = queryResult2[0].row_users + queryResult3[0].row_users;
+            unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
 
-        //update cumulative quarterly table
-        db.query("UPDATE `" + databaseType + "_CumulativeQuarterly` SET `end_date`= \"" + lastDateString
-        + "\",`total_users`=" + total_users + ",`eu_users`=" + eu_users + ",`na_users`=" + na_users + ",`row_users`="
-        + row_users + ",`unclassified_users`=" + unclassified_users + " WHERE `year` = " + year + " AND `quarter` = "
-        + quarter);
+            //update cumulative quarterly table
+            db.query("UPDATE `" + databaseType + "_CumulativeQuarterly` SET `end_date`= \"" + lastDateString
+            + "\",`total_users`=" + total_users + ",`eu_users`=" + eu_users + ",`na_users`=" + na_users + ",`row_users`="
+            + row_users + ",`unclassified_users`=" + unclassified_users + " WHERE `year` = " + year + " AND `quarter` = "
+            + quarter);
+        }
+        catch (error){
+            throw new Error("Check if database " + databaseType + "_CumulativeQuarterly contains record for year " + year
+                        + ", quarter " + quarter + " and end date " + previousWeekLastDateString);
+        }
+
     }
 
     var queryResult4 = db.query("SELECT * FROM `" + databaseType + "_CumulativeQuarterly` WHERE `end_date` = \""
                                                                                             + lastDateString + "\"");
-    dashboardData.cumulative_Quarter = getColumnData(queryResult4);
+    try{
+        dashboardData.cumulative_Quarter = getColumnData(queryResult4);
+    }
+    catch (error){
+        throw new Error("Check if database " + databaseType + "_CumulativeQuarterly contains record for end date " + lastDateString );
+    }
 
     //4 - Last Week
     var queryResult5 = db.query("SELECT * FROM `" + databaseType + "_Weekly` WHERE `start_date` = \"" +
                             previousWeekFirstDateString + "\" AND `end_date` = \"" + previousWeekLastDateString + "\"");
-    dashboardData.lastWeek = getColumnData(queryResult5);
 
+    try {
+        dashboardData.lastWeek = getColumnData(queryResult5);
+    }
+    catch (error){
+        throw new Error("Check if database " + databaseType + "_Weekly contains a record for start date " + previousWeekFirstDateString
+                                                + " and end date " + previousWeekLastDateString);
+    }
     //9 - YTD
     var queryResult6 = db.query("SELECT * FROM `" + databaseType + "_CumulativeYearly` WHERE `year` = " + year
                                                         +" AND `end_date` = \"" + previousWeekLastDateString + "\"" );
 
     if(queryResult6.length!=0){
-        total_users = queryResult2[0].total_users + queryResult6[0].total_users;
-        eu_users = queryResult2[0].eu_users + queryResult6[0].eu_users;
-        na_users = queryResult2[0].na_users + queryResult6[0].na_users;
-        row_users = queryResult2[0].row_users + queryResult6[0].row_users;
-        unclassified_users = queryResult2[0].unclassified_users + queryResult6[0].unclassified_users;
+        try {
+            total_users = queryResult2[0].total_users + queryResult6[0].total_users;
+            eu_users = queryResult2[0].eu_users + queryResult6[0].eu_users;
+            na_users = queryResult2[0].na_users + queryResult6[0].na_users;
+            row_users = queryResult2[0].row_users + queryResult6[0].row_users;
+            unclassified_users = queryResult2[0].unclassified_users + queryResult6[0].unclassified_users;
 
-        //update cumulative yearly table
-        db.query("UPDATE `" + databaseType + "_CumulativeYearly` SET `end_date`= \"" + lastDateString +
-        "\",`total_users`=" + total_users + ",`eu_users`=" + eu_users + ",`na_users`=" + na_users + ",`row_users`="
-                            + row_users + ",`unclassified_users`=" + unclassified_users + " WHERE `year` = " + year);
+            //update cumulative yearly table
+            db.query("UPDATE `" + databaseType + "_CumulativeYearly` SET `end_date`= \"" + lastDateString +
+            "\",`total_users`=" + total_users + ",`eu_users`=" + eu_users + ",`na_users`=" + na_users + ",`row_users`="
+            + row_users + ",`unclassified_users`=" + unclassified_users + " WHERE `year` = " + year);
+        }
+        catch (error){
+            throw new Error("Check if database " + databaseType + "_CumulativeYearly contains record for year " +
+                                                                year + " end date " + previousWeekLastDateString);
+        }
     }
 
     var queryResult7 = db.query("SELECT * FROM `" + databaseType + "_CumulativeYearly` WHERE `year` = " + year +
                                                                     " AND `end_date` = \"" + lastDateString + "\"" );
-    dashboardData.thisYear_ytd = getColumnData(queryResult7);
+
+    try{
+        dashboardData.thisYear_ytd = getColumnData(queryResult7);
+    }
+    catch (error){
+        throw new Error("Check if database " + databaseType + "_CumulativeYearly contains a record for year " + year
+                            + " and end date " + lastDateString);
+    }
 
     //10 - 2014
     var queryResult8 = db.query("SELECT * FROM `" + databaseType + "_Yearly` WHERE `year` = " + previousYear);
-    dashboardData.prevYear_total = getColumnData(queryResult8);
+
+    try{
+        dashboardData.prevYear_total = getColumnData(queryResult8);
+    }
+    catch (error){
+        throw new Error("Check if database " + databaseType + "_Yearly contains record for year " + previousYear);
+    }
 
     //5 - Forecast
     var forecast = quarterlyForecast;
@@ -166,32 +213,32 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
     //Calculate from values obtained from database and conf file
 
     //6 - WoW Growth
-    dashboardData.WoWGrowth = getCalculatedData(queryResult2,queryResult5);
+    dashboardData.WoWGrowth = getCalculatedData(queryResult2, queryResult5);
 
     //7 - QTD vs Forecast
     var total, na, eu, rest;
 
-    total = (queryResult4[0].total_users/forecast.total) * 100;
-    na = (queryResult4[0].na_users/forecast.na) * 100;
-    eu = (queryResult4[0].eu_users/forecast.eu) * 100;
-    rest = (queryResult4[0].row_users/forecast.rest) * 100;
+    total = (queryResult4[0].total_users / forecast.total) * 100;
+    na = (queryResult4[0].na_users / forecast.na) * 100;
+    eu = (queryResult4[0].eu_users / forecast.eu) * 100;
+    rest = (queryResult4[0].row_users / forecast.rest) * 100;
 
     dashboardData.qtdVsForecast = {
-        "total" : total,
-        "na" : na,
-        "naPer" : 0,
-        "eu" : eu,
-        "euPer" : 0,
-        "rest" : rest,
-        "restPer" : 0,
-        "unclassified" : 0
+        "total": total,
+        "na": na,
+        "naPer": 0,
+        "eu": eu,
+        "euPer": 0,
+        "rest": rest,
+        "restPer": 0,
+        "unclassified": 0
     };
 
     //8 - Q1 2015 YTD vs Q1 2014
-    dashboardData.ytdVsQuarter = getCalculatedData(queryResult4,queryResult1);
+    dashboardData.ytdVsQuarter = getCalculatedData(queryResult4, queryResult1);
 
     //11 - 2015 YTD vs 2014 per
-    dashboardData.thisYearVsPrevYear = getCalculatedData(queryResult7,queryResult8);
+    dashboardData.thisYearVsPrevYear = getCalculatedData(queryResult7, queryResult8);
 
     return dashboardData;
 };
@@ -208,16 +255,22 @@ var setQuarterlyData = function(databaseType,quarter,previousQuarter,insertYear,
         var queryResult1 = db.query("SELECT * FROM `" + databaseType +"_Quarterly` WHERE `quarter` = " + quarter +
                                                                                         " AND `year` = " + insertYear);
 
-        total_users = queryResult1[0].total_users;
-        eu_users = queryResult1[0].eu_users;
-        na_users = queryResult1[0].na_users;
-        row_users = queryResult1[0].row_users;
-        unclassified_users = queryResult1[0].unclassified_users;
+        try {
+            total_users = queryResult1[0].total_users;
+            eu_users = queryResult1[0].eu_users;
+            na_users = queryResult1[0].na_users;
+            row_users = queryResult1[0].row_users;
+            unclassified_users = queryResult1[0].unclassified_users;
 
-        db.query("INSERT INTO `" + databaseType + "_CumulativeQuarterly`(`year`, `quarter`, `end_date`, `total_users`,"+
-        " `eu_users`, `na_users`, `row_users`, `unclassified_users`) VALUES (" + insertYear + "," + quarter + ",\"" +
-                        lastDateString + "\"," + total_users + "," + eu_users + "," + na_users + "," + row_users + "," +
-                                                                                            unclassified_users + ")");
+            db.query("INSERT INTO `" + databaseType + "_CumulativeQuarterly`(`year`, `quarter`, `end_date`, `total_users`," +
+            " `eu_users`, `na_users`, `row_users`, `unclassified_users`) VALUES (" + insertYear + "," + quarter + ",\"" +
+            lastDateString + "\"," + total_users + "," + eu_users + "," + na_users + "," + row_users + "," +
+            unclassified_users + ")");
+        }
+        catch (error){
+            throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + insertYear
+                                    + " and quarter " + quarter);
+        }
     }
 
     queryResult = db.query("SELECT * FROM `" + databaseType +"_Quarterly` WHERE `year` = " + updateYear +
@@ -230,15 +283,21 @@ var setQuarterlyData = function(databaseType,quarter,previousQuarter,insertYear,
         var queryResult3 = db.query("SELECT * FROM `" + databaseType + "_CumulativeQuarterly` WHERE `quarter` = "
                                                                     + previousQuarter + " AND `year` = " + updateYear);
 
-        total_users = queryResult2[0].total_users + queryResult3[0].total_users;
-        eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
-        na_users = queryResult2[0].na_users + queryResult3[0].na_users;
-        row_users = queryResult2[0].row_users + queryResult3[0].row_users;
-        unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
+        try {
+            total_users = queryResult2[0].total_users + queryResult3[0].total_users;
+            eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
+            na_users = queryResult2[0].na_users + queryResult3[0].na_users;
+            row_users = queryResult2[0].row_users + queryResult3[0].row_users;
+            unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
 
-        db.query("UPDATE `" + databaseType +"_Quarterly` SET `total_users`=" + total_users + ",`eu_users`=" + eu_users +
-        ",`na_users`=" + na_users + ",`row_users`=" + row_users + ",`unclassified_users`=" + unclassified_users +
-        " WHERE `year` = " + updateYear + " AND `quarter` = " + previousQuarter);
+            db.query("UPDATE `" + databaseType + "_Quarterly` SET `total_users`=" + total_users + ",`eu_users`=" + eu_users +
+            ",`na_users`=" + na_users + ",`row_users`=" + row_users + ",`unclassified_users`=" + unclassified_users +
+            " WHERE `year` = " + updateYear + " AND `quarter` = " + previousQuarter);
+        }
+        catch (error){
+            throw new Error("Check if databases " + databaseType + "_Quarterly and " + databaseType +
+                    "_CumulativeQuarterly contains records for year " + updateYear + " and quarter " + previousQuarter);
+        }
     }
 };
 
@@ -254,15 +313,20 @@ var setYearlyData = function(databaseType,year,previousYear,prevQuarter,lastDate
         //Insert record for new year in cumulative yearly
         var queryResult1 = db.query("SELECT * FROM `" + databaseType + "_Yearly` WHERE `year` = " + year);
 
-        total_users = queryResult1[0].total_users;
-        eu_users = queryResult1[0].eu_users;
-        na_users = queryResult1[0].na_users;
-        row_users = queryResult1[0].row_users;
-        unclassified_users = queryResult1[0].unclassified_users;
+        try {
+            total_users = queryResult1[0].total_users;
+            eu_users = queryResult1[0].eu_users;
+            na_users = queryResult1[0].na_users;
+            row_users = queryResult1[0].row_users;
+            unclassified_users = queryResult1[0].unclassified_users;
 
-        db.query("INSERT INTO `" + databaseType +"_CumulativeYearly`(`year`, `end_date`, `total_users`, `eu_users`, " +
-        "`na_users`, `row_users`, `unclassified_users`) VALUES (" + year + ",\"" + lastDateString + "\"," + total_users
-        + "," + eu_users + "," + na_users + "," + row_users + "," + unclassified_users + ")");
+            db.query("INSERT INTO `" + databaseType + "_CumulativeYearly`(`year`, `end_date`, `total_users`, `eu_users`, " +
+            "`na_users`, `row_users`, `unclassified_users`) VALUES (" + year + ",\"" + lastDateString + "\"," + total_users
+            + "," + eu_users + "," + na_users + "," + row_users + "," + unclassified_users + ")");
+        }
+        catch (error){
+            throw new Error("Check if database " + databaseType + "_Yearly contains record for year " + year);
+        }
     }
 
     queryResult = db.query("SELECT * FROM `" + databaseType + "_Yearly` WHERE `year` = " + previousYear);
@@ -274,15 +338,21 @@ var setYearlyData = function(databaseType,year,previousYear,prevQuarter,lastDate
         var queryResult3 = db.query("SELECT * FROM `" + databaseType +"_CumulativeYearly` WHERE `year` = "
                                                                                                         + previousYear);
 
-        total_users = queryResult2[0].total_users + queryResult3[0].total_users;
-        eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
-        na_users = queryResult2[0].na_users + queryResult3[0].na_users;
-        row_users = queryResult2[0].row_users + queryResult3[0].row_users;
-        unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
+        try {
+            total_users = queryResult2[0].total_users + queryResult3[0].total_users;
+            eu_users = queryResult2[0].eu_users + queryResult3[0].eu_users;
+            na_users = queryResult2[0].na_users + queryResult3[0].na_users;
+            row_users = queryResult2[0].row_users + queryResult3[0].row_users;
+            unclassified_users = queryResult2[0].unclassified_users + queryResult3[0].unclassified_users;
 
-        db.query("INSERT INTO `" + databaseType + "_Yearly`(`year`, `total_users`, `eu_users`, `na_users`, `row_users`," +
-        " `unclassified_users`) VALUES (" + previousYear + "," + total_users + "," + eu_users + "," + na_users + "," +
-        row_users + "," + unclassified_users + ")");
+            db.query("INSERT INTO `" + databaseType + "_Yearly`(`year`, `total_users`, `eu_users`, `na_users`, `row_users`," +
+            " `unclassified_users`) VALUES (" + previousYear + "," + total_users + "," + eu_users + "," + na_users + "," +
+            row_users + "," + unclassified_users + ")");
+        }
+        catch (error){
+            throw new Error("Check if databases " + databaseType + "_Quarterly and " + databaseType +
+            "_CumulativeQuarterly contains records for year " + previousYear + " and quarter " + prevQuarter);
+        }
     }
 };
 
@@ -307,15 +377,28 @@ var getPrevQuarterData = function(databaseType,quarter){
             queryResult = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + previousYear +
                                                                                             " AND `quarter` = " + i);
 
-            previousQuarterData.previousYear.year = previousYear;
-            previousQuarterData.previousYear.quarter = i;
-            previousQuarterData.previousYear.columnData = getColumnData(queryResult[0]);
+            try {
+                previousQuarterData.previousYear.year = previousYear;
+                previousQuarterData.previousYear.quarter = i;
+                previousQuarterData.previousYear.columnData = getColumnData(queryResult);
+            }
+            catch(error){
+                throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + previousYear
+                                    + " and quarter " + i);
+            }
 
             queryResult = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + year +
                                                                                             " AND `quarter` = " + i);
-            previousQuarterData.thisYear.year = year;
-            previousQuarterData.thisYear.quarter = i;
-            previousQuarterData.thisYear.columnData = getColumnData(queryResult[0]);
+
+            try {
+                previousQuarterData.thisYear.year = year;
+                previousQuarterData.thisYear.quarter = i;
+                previousQuarterData.thisYear.columnData = getColumnData(queryResult);
+            }
+            catch (error){
+                throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + year
+                + " and quarter " + i);
+            }
 
             previousQuartersData.push(previousQuarterData);
         }
@@ -326,11 +409,18 @@ var getPrevQuarterData = function(databaseType,quarter){
 var getWeeklyData = function(databaseType){
     var weeklyData = [];
 
+    var log = new Log();
     for(var i =0 ; i< dateRanges.length;i++){
 
         var queryResult = db.query("SELECT * FROM `" + databaseType + "_Weekly` WHERE `start_date` = \"" +
                                 dateRanges[i].firstDate + "\" AND `end_date` = \"" + dateRanges[i].lastDate + "\"");
-        weeklyData.push(queryResult[0]);
+        if(queryResult[0]!=null) {
+            weeklyData.push(queryResult[0]);
+        }
+        else{
+            throw new Error("Check if database " + databaseType + "_Weekly contains record for start date " +
+                dateRanges[i].firstDate + " and end date " + dateRanges[i].lastDate);
+        }
     }
 
     return weeklyData;
@@ -356,7 +446,7 @@ var getQuarterlyData_ThisYear = function(prevQData,dashboardData){
     var quarterlyData_ThisYear = [];
 
     for(var i =0 ; i < prevQData.length;i++){
-        quarterlyData_ThisYear.push(prevQData[i]);
+        quarterlyData_ThisYear.push(prevQData[i].thisYear.columnData);
     }
 
     quarterlyData_ThisYear.push(dashboardData.cumulative_Quarter);
@@ -371,7 +461,13 @@ var getQuarterlyData_PrevYear = function(databaseType){
     for(var i = 0; i < quarter;i++){
         queryResult = db.query("SELECT * FROM `" + databaseType +"_Quarterly` WHERE `year` = " + previousYear +
                                                                                         " AND `quarter` = " + (i+1) );
-        quarterlyData_PreviousYear.push(dataManipulation.getColumnData(queryResult));
+        try{
+            quarterlyData_PreviousYear.push(getColumnData(queryResult));
+        }
+        catch (error){
+            throw new Error("Check if database " + databaseType + "_Quarterly contains a record for year " +
+                                previousYear + " and quarter " + (i+1));
+        }
     }
 
     return quarterlyData_PreviousYear;

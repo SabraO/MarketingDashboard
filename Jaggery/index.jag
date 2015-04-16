@@ -8,6 +8,7 @@
 </head>
 
 <%
+
   if(request.getMethod()=="POST"){
     var userName = request.getParameter("username");
     var password = request.getParameter("password");
@@ -73,11 +74,15 @@
                         <div class="block"><span class="padding-double float-left font-large">Sign in to continue</span></div>
 
                         <div class="wr-input-control padding-double">
-                            <br><br><br>
                             <form id="form" method="POST">
+                              <br><br><br>
                               <p><input type="text" name="username" placeholder="Username"></p>
+                              <br>
                               <p><input type="password" name="password" placeholder="Password"></p>
-                              <p><input type="submit" class="padding-bottom-double"></p>
+                              <br>
+                              <div class="wr-input-control padding-bottom-double" style="margin-right: -13px">
+                                <button class="wr-btn grey-bg login uppercase font-extra-large">Login</button>
+                              </div>
                             </form>
                         </div>
                     </div>

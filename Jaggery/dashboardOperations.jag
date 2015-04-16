@@ -1,4 +1,6 @@
 <%
+    //var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
+
     require("js/modules/date.js");
     var dateJs = require("/js/util/dateFunction.js");
     var initialization = require("/js/config/initialization.js");
@@ -6,6 +8,10 @@
 
     var firstDate, firstDateString, lastDate, lastDateString, previousWeekFirstDate, previousWeekFirstDateString,
             previousWeekLastDate, previousWeekLastDateString, year, previousYear, quarter;
+
+    var dashboardData;
+    var PrevQuarterData, dateRanges, weeklyData, yearlyData, QDataThisYear, QDataPrevYear, forecast_Quarter, cumulative_Quarter;
+    var yearD, quarterD, previousYearD;
 
     year = dateJs.getYear();
 
@@ -19,14 +25,24 @@
 
         if (quarter != 1) {
             prevQuarter = quarter - 1;
-            dataManipulation.setQuarterlyData(databaseType, quarter, prevQuarter, year, year, lastDateString);
+            try {
+                dataManipulation.setQuarterlyData(databaseType, quarter, prevQuarter, year, year, lastDateString);
+            }
+            catch (error){
+                throw error;
+            }
         }
         else {
             prevQuarter = 4;
 
-            dataManipulation.setYearlyData(databaseType, year, previousYear, prevQuarter, lastDateString);
-            dataManipulation.setQuarterlyData(databaseType, quarter, prevQuarter, year, previousYear,
-                    lastDateString);
+            try {
+                dataManipulation.setYearlyData(databaseType, year, previousYear, prevQuarter, lastDateString);
+                dataManipulation.setQuarterlyData(databaseType, quarter, prevQuarter, year, previousYear,
+                        lastDateString);
+            }
+            catch (error){
+                throw error;
+            }
         }
     }
 
@@ -34,39 +50,41 @@
     var db = initialization.getDatabase();
     var dashboardParameters = db.query("SELECT * FROM `DashboardQueryParameters` WHERE `year` = " + year +
     " AND `lastDate` = \"" + lastDateString + "\"");
-    previousYear = dashboardParameters[0].previousYear;
-    quarter = dashboardParameters[0].quarter;
-    firstDateString = dashboardParameters[0].firstDate;
-    previousWeekFirstDateString = dashboardParameters[0].prevWeekFirstDate;
-    previousWeekLastDateString = dashboardParameters[0].prevWeekLastDate;
+    try {
+        previousYear = dashboardParameters[0].previousYear;
+        quarter = dashboardParameters[0].quarter;
+        firstDateString = dashboardParameters[0].firstDate;
+        previousWeekFirstDateString = dashboardParameters[0].prevWeekFirstDate;
+        previousWeekLastDateString = dashboardParameters[0].prevWeekLastDate;
 
-    var dashboardData;
+        dashboardData = dataManipulation.getDashboardData(databaseType, leadType, year, previousYear,
+                quarter, firstDateString, lastDateString, previousWeekFirstDateString, previousWeekLastDateString, quarterlyForecast);
 
-    dashboardData = dataManipulation.getDashboardData(databaseType, leadType, year, previousYear,
-            quarter, firstDateString, lastDateString, previousWeekFirstDateString, previousWeekLastDateString,quarterlyForecast);
+        PrevQuarterData = dataManipulation.getPrevQuarterData(databaseType, quarter);
+        //To display in graphs
+        //WoW Performance - This week and Last 4 weeks (Total 5 weeks)
+        dateRanges = dateJs.getDateRange();
 
-    //To show in table, get the dashboard data for previous quarters
-    var PrevQuarterData = dataManipulation.getPrevQuarterData(databaseType, quarter);
+        weeklyData = dataManipulation.getWeeklyData(databaseType);
 
-    //To display in graphs
-    //WoW Performance - This week and Last 4 weeks (Total 5 weeks)
-    var dateRanges = dateJs.getDateRange();
+        //Yearly Comparison
+        yearlyData = dataManipulation.getYearlyData(databaseType);
 
-    var weeklyData = dataManipulation.getWeeklyData(databaseType);
+        //Quarterly Comparison
+        QDataThisYear = dataManipulation.getQuarterlyData_ThisYear(PrevQuarterData, dashboardData);
+        QDataPrevYear = dataManipulation.getQuarterlyData_PrevYear(databaseType);
 
-    //Yearly Comparison
-    var yearlyData = dataManipulation.getYearlyData(databaseType);
+        //Forecast vs Cumulative
+        forecast_Quarter = dashboardData.forecast_Quarter;
+        cumulative_Quarter = dashboardData.cumulative_Quarter;
 
-    //Quarterly Comparison
-    var QDataThisYear = dataManipulation.getQuarterlyData_ThisYear(PrevQuarterData,
-            dashboardData);
-    var QDataPrevYear = dataManipulation.getQuarterlyData_PrevYear(databaseType);
+    }
+    catch (error){
+        throw error;
+    }
 
-    //Forecast vs Cumulative
-    var forecast_Quarter = dashboardData.forecast_Quarter;
-    var cumulative_Quarter = dashboardData.cumulative_Quarter;
+    yearD = "" + year;
+    quarterD = "" + quarter;
+    previousYearD = "" + previousYear;
 
-    var yearD = "" + year;
-    var quarterD = "" + quarter;
-    var previousYearD = "" + previousYear;
 %>

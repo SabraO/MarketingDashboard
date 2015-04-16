@@ -4,16 +4,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <%
-    if(session.get("active")=="true") {
-        var config = require("/config.json");
-        var quarterlyForecastConfig = require("/quarterlyForecastConfig.json");
 
-        var leadType = config.webSiteVisitors;
-        var databaseType = "WebsiteVisitors";
-        var quarterlyForecast = quarterlyForecastConfig.webSiteVisitors.forecast;
+var dashboardData,yearD,quarterD,previousYearD,firstDateString,lastDateString,previousWeekFirstDateString,
+        previousWeekLastDateString,PrevQuarterData, weeklyData, dateRanges, forecast_Quarter, QDataThisYear,
+        QDataPrevYear, yearlyData, cumulative_Quarter;
 
+if (session.get("active") == "true") {
+    var config = require("/config.json");
+    var quarterlyForecastConfig = require("/quarterlyForecastConfig.json");
+
+    var leadType = config.webSiteVisitors;
+    var databaseType = "WebsiteVisitors";
+    var quarterlyForecast = quarterlyForecastConfig.webSiteVisitors.forecast;
+
+    var errorMessage;
+    try {
         include("/dashboardOperations.jag");
     }
+    catch (error) {
+        var log = new Log();
+        log.info(error);
+
+        var completeErrorMessage = error.message;
+
+        var splitErrorMessages = completeErrorMessage.split(":");
+        var specificErrorMessage = splitErrorMessages[3].split("(");
+
+        errorMessage = specificErrorMessage[0];
+    }
+
+}
+else{
+    print('<script>location = "index.jag";</script>');
+}
 
 %>
 
@@ -35,7 +58,16 @@
 
           $(document).ready(function() {
 
+               var error = '<%=errorMessage%>';
+
+               if(error!='null'){
+                    alert(error);
+                    location = "index.jag";
+               }
+               else{
+               $("body").show();
                var dashboardData = JSON.parse('<%=dashboardData%>');
+
                var year = '<%=yearD%>';
                var quarter = '<%=quarterD%>';
                var previousYear = '<%=previousYearD%>';
@@ -43,11 +75,10 @@
                var lastDateString = '<%=lastDateString%>';
                var prevWeekFirstDateString = '<%=previousWeekFirstDateString%>';
                var prevWeekLastDateString = '<%=previousWeekLastDateString%>';
-
                var previousQuartersData = JSON.parse('<%=PrevQuarterData%>');
 
-               var tableContent = populateDashboard("Website Visitors",dashboardData,year,quarter,previousYear,
-                firstDateString,lastDateString,prevWeekFirstDateString,prevWeekLastDateString,previousQuartersData);
+                var tableContent = populateDashboard("Website Visitors",dashboardData,year,quarter,previousYear,
+                    firstDateString,lastDateString,prevWeekFirstDateString,prevWeekLastDateString,previousQuartersData);
 
                $("#table").html(tableContent);
 
@@ -85,15 +116,17 @@
                 $("#logout").click(function() {
                      location = "index.jag";
                 });
+               }
+
           });
 
      </script>
 </head>
 
-<body>
+<body style="display: none;">
 
     <header class="padding-bottom-double">
-        <div class="col-x-small padding-top-double dark-grey-by  padding-left white uppercase padding-bottom-double inline-block  ">Weekly Marketing dashboard</div>
+        <div class="col-x-small padding-top-double dark-grey-by  padding-left white uppercase padding-bottom-double inline-block center ">Weekly Marketing dashboard</div>
         <div id="wv" class="link uppercase">Website Visitors </div>
         <div id="rl" class="link uppercase">Raw Leads</div>
         <div id="sql" class="link uppercase">Sales Qualified Leads  </div>
@@ -101,55 +134,56 @@
     </header>
 
      <div id="content">
-        <div class="col-row overlow-hidden margin-bottom-double">
-            <div class="col-row light-grey-bg padding white uppercase  ">website visitors</div>
-                <div id="dashboard" class="col-row white-bg">
+
+          <div class="col-row overlow-hidden margin-bottom-double">
+                <div class="col-row light-grey-bg padding white uppercase  ">website visitors</div>
+                <div id="dashboard" class="col-row white-bg overflow-x">
                     <table id="table">
 
                     </table>
                 </div>
+          </div>
+
+        <div class="col-row overlow-hidden margin-top-double">
+            <div class="col-row light-grey-bg padding white uppercase  ">WoW Performance</div>
+            <div id="WoWPerformanceComparison" class="col-row white-bg"></div>
+         </div>
+
+         <div class="col-row overlow-hidden margin-top-double">
+            <div class="col-row light-grey-bg padding white uppercase  ">Quarterly Comparison</div>
+            <div id="quarterlyComparison" class="col-row white-bg"></div>
+         </div>
+
+         <div class="col-row overlow-hidden margin-top-double">
+            <div class="col-row light-grey-bg padding white uppercase  ">Yearly Comparison</div>
+            <div id="yearlyComparison" class="col-row white-bg"></div>
+         </div>
+
+
+         <div class="margin-top-double col-row">
+            <div class="col-medium overlow-hidden inline-block margin-right-double">
+                <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+                <div id="forecastVsCumulativeComparison_Total" class="col-row white-bg"></div>
             </div>
-        </div>
-     </div>
 
-     <div class="col-row overlow-hidden margin-top-double">
-        <div class="col-row light-grey-bg padding white uppercase  ">WoW Performance</div>
-        <div id="WoWPerformanceComparison" class="col-row white-bg"></div>
-     </div>
+            <div class="col-medium overlow-hidden inline-block">
+                <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+                <div id="forecastVsCumulativeComparison_NA" class="col-row white-bg"></div>
+            </div>
+         </div>
 
-     <div class="col-row overlow-hidden margin-top-double">
-        <div class="col-row light-grey-bg padding white uppercase  ">Quarterly Comparison</div>
-        <div id="quarterlyComparison" class="col-row white-bg"></div>
-     </div>
+         <div class="margin-top-double col-row">
+            <div class="col-medium overlow-hidden inline-block margin-right-double">
+                <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+                <div id="forecastVsCumulativeComparison_EU" class="col-row white-bg"></div>
+            </div>
 
-     <div class="col-row overlow-hidden margin-top-double">
-        <div class="col-row light-grey-bg padding white uppercase  ">Yearly Comparison</div>
-        <div id="yearlyComparison" class="col-row white-bg"></div>
-     </div>
+            <div class="col-medium overlow-hidden inline-block">
+                <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
+                <div id="forecastVsCumulativeComparison_REST" class="col-row white-bg"></div>
+            </div>
+         </div>
 
-
-     <div class="margin-top-double col-row">
-        <div class="col-medium overlow-hidden inline-block margin-right-double">
-            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
-            <div id="forecastVsCumulativeComparison_Total" class="col-row white-bg"></div>
-        </div>
-
-        <div class="col-medium overlow-hidden inline-block">
-            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
-            <div id="forecastVsCumulativeComparison_NA" class="col-row white-bg"></div>
-        </div>
-     </div>
-
-     <div class="margin-top-double col-row">
-        <div class="col-medium overlow-hidden inline-block margin-right-double">
-            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
-            <div id="forecastVsCumulativeComparison_EU" class="col-row white-bg"></div>
-        </div>
-
-        <div class="col-medium overlow-hidden inline-block">
-            <div class="col-row light-grey-bg padding white uppercase">forecast vs cumulative</div>
-            <div id="forecastVsCumulativeComparison_REST" class="col-row white-bg"></div>
-        </div>
      </div>
 
 </body>
