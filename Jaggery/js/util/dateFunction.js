@@ -1,9 +1,10 @@
 var getLastDate  = function () {
-    return Date.today().next().saturday();
+    return Date.today().last().saturday();
 };
 
 var getYear = function(){
-    return Date.today().next().saturday().getFullYear().toString();
+    var date = getLastDate();
+    return date.getFullYear().toString();
 };
 
 var yyyymmdd = function(date) {
