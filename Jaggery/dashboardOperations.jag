@@ -1,6 +1,4 @@
 <%
-    //var db = new Database("jdbc:mysql://localhost:3306/WSO2MarketingDashboardData", "root", "root");
-
     require("js/modules/date.js");
     var dateJs = require("/js/util/dateFunction.js");
     var initialization = require("/js/config/initialization.js");
