@@ -91,7 +91,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.prevYear_Quarter = getColumnData(queryResult1);
     }
     catch(error){
-        throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + previousYear + " and quarter " + quarter);
+        throw new Error("Check if table " + databaseType + "_Quarterly contains record for year " + previousYear + " and quarter " + quarter);
     }
     //3 - This Week
     var queryResult2 = db.query("SELECT * FROM `" + databaseType + "_Weekly` WHERE `start_date` = \"" + firstDateString
@@ -100,7 +100,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.thisWeek = getColumnData(queryResult2);
     }
     catch(error){
-        throw new Error("Check if database " + databaseType + "_Weekly contains record for start date " + firstDateString +
+        throw new Error("Check if table " + databaseType + "_Weekly contains record for start date " + firstDateString +
                                                                                 " and last date " + lastDateString);
     }
 
@@ -123,7 +123,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
             + quarter);
         }
         catch (error){
-            throw new Error("Check if database " + databaseType + "_CumulativeQuarterly contains record for year " + year
+            throw new Error("Check if table " + databaseType + "_CumulativeQuarterly contains record for year " + year
                         + ", quarter " + quarter + " and end date " + previousWeekLastDateString);
         }
 
@@ -135,7 +135,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.cumulative_Quarter = getColumnData(queryResult4);
     }
     catch (error){
-        throw new Error("Check if database " + databaseType + "_CumulativeQuarterly contains record for end date " + lastDateString );
+        throw new Error("Check if table " + databaseType + "_CumulativeQuarterly contains record for end date " + lastDateString );
     }
 
     //4 - Last Week
@@ -146,7 +146,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.lastWeek = getColumnData(queryResult5);
     }
     catch (error){
-        throw new Error("Check if database " + databaseType + "_Weekly contains a record for start date " + previousWeekFirstDateString
+        throw new Error("Check if table " + databaseType + "_Weekly contains a record for start date " + previousWeekFirstDateString
                                                 + " and end date " + previousWeekLastDateString);
     }
     //9 - YTD
@@ -167,7 +167,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
             + row_users + ",`unclassified_users`=" + unclassified_users + " WHERE `year` = " + year);
         }
         catch (error){
-            throw new Error("Check if database " + databaseType + "_CumulativeYearly contains record for year " +
+            throw new Error("Check if table " + databaseType + "_CumulativeYearly contains record for year " +
                                                                 year + " end date " + previousWeekLastDateString);
         }
     }
@@ -179,7 +179,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.thisYear_ytd = getColumnData(queryResult7);
     }
     catch (error){
-        throw new Error("Check if database " + databaseType + "_CumulativeYearly contains a record for year " + year
+        throw new Error("Check if table " + databaseType + "_CumulativeYearly contains a record for year " + year
                             + " and end date " + lastDateString);
     }
 
@@ -190,7 +190,7 @@ var getDashboardData = function(databaseType,leadType,year,previousYear,quarter,
         dashboardData.prevYear_total = getColumnData(queryResult8);
     }
     catch (error){
-        throw new Error("Check if database " + databaseType + "_Yearly contains record for year " + previousYear);
+        throw new Error("Check if table " + databaseType + "_Yearly contains record for year " + previousYear);
     }
 
     //5 - Forecast
@@ -268,7 +268,7 @@ var setQuarterlyData = function(databaseType,quarter,previousQuarter,insertYear,
             unclassified_users + ")");
         }
         catch (error){
-            throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + insertYear
+            throw new Error("Check if table " + databaseType + "_Quarterly contains record for year " + insertYear
                                     + " and quarter " + quarter);
         }
     }
@@ -295,7 +295,7 @@ var setQuarterlyData = function(databaseType,quarter,previousQuarter,insertYear,
             " WHERE `year` = " + updateYear + " AND `quarter` = " + previousQuarter);
         }
         catch (error){
-            throw new Error("Check if databases " + databaseType + "_Quarterly and " + databaseType +
+            throw new Error("Check if tables " + databaseType + "_Quarterly and " + databaseType +
                     "_CumulativeQuarterly contains records for year " + updateYear + " and quarter " + previousQuarter);
         }
     }
@@ -325,7 +325,7 @@ var setYearlyData = function(databaseType,year,previousYear,prevQuarter,lastDate
             + "," + eu_users + "," + na_users + "," + row_users + "," + unclassified_users + ")");
         }
         catch (error){
-            throw new Error("Check if database " + databaseType + "_Yearly contains record for year " + year);
+            throw new Error("Check if table " + databaseType + "_Yearly contains record for year " + year);
         }
     }
 
@@ -350,7 +350,7 @@ var setYearlyData = function(databaseType,year,previousYear,prevQuarter,lastDate
             row_users + "," + unclassified_users + ")");
         }
         catch (error){
-            throw new Error("Check if databases " + databaseType + "_Quarterly and " + databaseType +
+            throw new Error("Check if tables " + databaseType + "_Quarterly and " + databaseType +
             "_CumulativeQuarterly contains records for year " + previousYear + " and quarter " + prevQuarter);
         }
     }
@@ -383,7 +383,7 @@ var getPrevQuarterData = function(databaseType,quarter){
                 previousQuarterData.previousYear.columnData = getColumnData(queryResult);
             }
             catch(error){
-                throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + previousYear
+                throw new Error("Check if table " + databaseType + "_Quarterly contains record for year " + previousYear
                                     + " and quarter " + i);
             }
 
@@ -396,7 +396,7 @@ var getPrevQuarterData = function(databaseType,quarter){
                 previousQuarterData.thisYear.columnData = getColumnData(queryResult);
             }
             catch (error){
-                throw new Error("Check if database " + databaseType + "_Quarterly contains record for year " + year
+                throw new Error("Check if table " + databaseType + "_Quarterly contains record for year " + year
                 + " and quarter " + i);
             }
 
@@ -418,7 +418,7 @@ var getWeeklyData = function(databaseType){
             weeklyData.push(queryResult[0]);
         }
         else{
-            throw new Error("Check if database " + databaseType + "_Weekly contains record for start date " +
+            throw new Error("Check if table " + databaseType + "_Weekly contains record for start date " +
                 dateRanges[i].firstDate + " and end date " + dateRanges[i].lastDate);
         }
     }
@@ -465,7 +465,7 @@ var getQuarterlyData_PrevYear = function(databaseType){
             quarterlyData_PreviousYear.push(getColumnData(queryResult));
         }
         catch (error){
-            throw new Error("Check if database " + databaseType + "_Quarterly contains a record for year " +
+            throw new Error("Check if table " + databaseType + "_Quarterly contains a record for year " +
                                 previousYear + " and quarter " + (i+1));
         }
     }
