@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class Util {
 
-	private static final String PROPERTY_FILE_PATH = "../main.properties";
+	private static final String PROPERTY_FILE_PATH = "./main.properties";
 	private static final Properties MAIN_PROPERTIES = new Properties();
 
 	public static void initializeMainProperties() throws IOException {
