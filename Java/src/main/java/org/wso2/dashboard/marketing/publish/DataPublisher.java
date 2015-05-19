@@ -4,7 +4,7 @@ import com.sforce.ws.ConnectionException;
 import org.wso2.dashboard.marketing.access.data.GoogleAnalyticsAccess;
 import org.wso2.dashboard.marketing.access.data.RightWaveAccess;
 import org.wso2.dashboard.marketing.access.data.SalesForceAccess;
-import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
+import org.wso2.dashboard.marketing.client.Dataservice1DefaultSNAPSHOTStub;
 import org.wso2.dashboard.marketing.model.DateRange;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
 import org.wso2.dashboard.marketing.publish.data.RawLeadsPersist;
@@ -25,7 +25,7 @@ public class DataPublisher {
 	private static WebsiteVisitorsPersist wvPersist;
 	private static RawLeadsPersist rlPersist;
 	private static SalesQualifiedLeadsPersist sqlPersist;
-	private static WSO2MarketingDashboardDataServiceStub stub;
+	private static Dataservice1DefaultSNAPSHOTStub stub;
 
 	private static final String WEEKLY_REPORT_ID = "salesforce.perweekreportid";
 	private static final String PREV_QUARTER_REPORT_ID = "salesforce.sqlsforpreviousquarterreportid";

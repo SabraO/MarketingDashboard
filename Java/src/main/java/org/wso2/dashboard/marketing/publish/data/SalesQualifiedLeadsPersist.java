@@ -1,6 +1,6 @@
 package org.wso2.dashboard.marketing.publish.data;
 
-import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
+import org.wso2.dashboard.marketing.client.Dataservice1DefaultSNAPSHOTStub;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
 
 import java.rmi.RemoteException;
@@ -8,10 +8,10 @@ import java.util.List;
 
 public class SalesQualifiedLeadsPersist implements Leads {
 
-	@Override public void insertToWeeklyDB(WSO2MarketingDashboardDataServiceStub stub, String startDate, String endDate,
+	@Override public void insertToWeeklyDB(Dataservice1DefaultSNAPSHOTStub stub, String startDate, String endDate,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek request =
-				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerWeek();
+		Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerWeek request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerWeek();
 
 		request.setStart_date(startDate);
 		request.setEnd_date(endDate);
@@ -24,11 +24,11 @@ public class SalesQualifiedLeadsPersist implements Leads {
 		stub.insertSalesQualifiedLeadsPerWeek(request);
 	}
 
-	@Override public void insertToQuarterlyDB(WSO2MarketingDashboardDataServiceStub stub, String year, int quarter,
+	@Override public void insertToQuarterlyDB(Dataservice1DefaultSNAPSHOTStub stub, String year, int quarter,
 	                                          List<RegionCount> regionCountList) throws RemoteException {
 
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter request =
-				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerQuarter();
+		Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerQuarter request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerQuarter();
 
 		request.setYear(year);
 		request.setQuarter(quarter);
@@ -41,11 +41,11 @@ public class SalesQualifiedLeadsPersist implements Leads {
 		stub.insertSalesQualifiedLeadsPerQuarter(request);
 	}
 
-	@Override public void insertToYearlyDB(WSO2MarketingDashboardDataServiceStub stub, String year,
+	@Override public void insertToYearlyDB(Dataservice1DefaultSNAPSHOTStub stub, String year,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
 
-		WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear request =
-				new WSO2MarketingDashboardDataServiceStub.InsertSalesQualifiedLeadsPerYear();
+		Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerYear request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertSalesQualifiedLeadsPerYear();
 
 		request.setYear(year);
 		request.setTotal_users(regionCountList.get(0).getNoOfUsers());

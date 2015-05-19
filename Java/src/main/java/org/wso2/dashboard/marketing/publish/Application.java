@@ -11,7 +11,7 @@ public class Application {
 		try {
 			DataPublisher.publishData();
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 
 	}

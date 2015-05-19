@@ -9,7 +9,7 @@ import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.neethi.Policy;
 import org.apache.neethi.PolicyEngine;
 import org.apache.rampart.RampartMessageData;
-import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
+import org.wso2.dashboard.marketing.client.Dataservice1DefaultSNAPSHOTStub;
 import org.wso2.dashboard.marketing.util.Util;
 
 import javax.xml.stream.XMLStreamException;
@@ -31,24 +31,23 @@ public class DataServiceConnector {
 	private static final String PASSWORD = "admin";
 	private static final String POLICY_FILE_PATH = "policyfile.path";
 
-	public static WSO2MarketingDashboardDataServiceStub createConnection()
+	public static Dataservice1DefaultSNAPSHOTStub createConnection()
 			throws AxisFault, FileNotFoundException, XMLStreamException {
 
 		String epr = Util.getProperty(DATASERVICE_EPR);
-
 		System.setProperty(TRUST_STORE_PROPERTY, (new File(Util.getProperty(TRUST_STORE_PATH))).getAbsolutePath());
 		System.setProperty(TRUST_STORE_PASSWORD_PROPERTY, TRUST_STORE_PASSWORD);
 
 		ConfigurationContext ctx = ConfigurationContextFactory
 				.createConfigurationContextFromFileSystem(Util.getProperty(LOCAL_REPO_PATH), null);
-		WSO2MarketingDashboardDataServiceStub stub = new WSO2MarketingDashboardDataServiceStub(ctx, epr);
+		Dataservice1DefaultSNAPSHOTStub stub = new Dataservice1DefaultSNAPSHOTStub(ctx,epr);
 		ServiceClient client = stub._getServiceClient();
 		Options options = client.getOptions();
 		client.engageModule(MODULE);
 		options.setUserName(USERNAME);
 		options.setPassword(PASSWORD);
 
-		options.setProperty(RampartMessageData.KEY_RAMPART_POLICY, loadPolicy(Util.getProperty(POLICY_FILE_PATH)));
+		//options.setProperty(RampartMessageData.KEY_RAMPART_POLICY, loadPolicy(Util.getProperty(POLICY_FILE_PATH)));
 
 		return stub;
 

@@ -1,6 +1,6 @@
 package org.wso2.dashboard.marketing.publish.data;
 
-import org.wso2.dashboard.marketing.client.WSO2MarketingDashboardDataServiceStub;
+import org.wso2.dashboard.marketing.client.Dataservice1DefaultSNAPSHOTStub;
 import org.wso2.dashboard.marketing.model.processeddata.RegionCount;
 
 import java.rmi.RemoteException;
@@ -8,10 +8,10 @@ import java.util.List;
 
 public class RawLeadsPersist implements Leads {
 
-	@Override public void insertToWeeklyDB(WSO2MarketingDashboardDataServiceStub stub, String startDate, String endDate,
+	@Override public void insertToWeeklyDB(Dataservice1DefaultSNAPSHOTStub stub, String startDate, String endDate,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
-		WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerWeek request =
-				new WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerWeek();
+		Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerWeek request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerWeek();
 
 		request.setStart_date(startDate);
 		request.setEnd_date(endDate);
@@ -24,10 +24,10 @@ public class RawLeadsPersist implements Leads {
 		stub.insertRawLeadsPerWeek(request);
 	}
 
-	@Override public void insertToQuarterlyDB(WSO2MarketingDashboardDataServiceStub stub, String year, int quarter,
+	@Override public void insertToQuarterlyDB(Dataservice1DefaultSNAPSHOTStub stub, String year, int quarter,
 	                                          List<RegionCount> regionCountList) throws RemoteException {
-		WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerQuarter request =
-				new WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerQuarter();
+		Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerQuarter request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerQuarter();
 
 		request.setYear(year);
 		request.setQuarter(quarter);
@@ -40,10 +40,10 @@ public class RawLeadsPersist implements Leads {
 		stub.insertRawLeadsPerQuarter(request);
 	}
 
-	@Override public void insertToYearlyDB(WSO2MarketingDashboardDataServiceStub stub, String year,
+	@Override public void insertToYearlyDB(Dataservice1DefaultSNAPSHOTStub stub, String year,
 	                                       List<RegionCount> regionCountList) throws RemoteException {
-		WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerYear request =
-				new WSO2MarketingDashboardDataServiceStub.InsertRawLeadsPerYear();
+		Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerYear request =
+				new Dataservice1DefaultSNAPSHOTStub.InsertRawLeadsPerYear();
 
 		request.setYear(year);
 		request.setTotal_users(regionCountList.get(0).getNoOfUsers());
