@@ -1,11 +1,9 @@
 var getLastDate  = function () {
-    //return Date.today().last().saturday();
-    return new Date(2015,03,04);
+    return Date.today().last().saturday();
 };
 
 var getYear = function(){
-    //var date = getLastDate();
-    var date = new Date(2015,03,04);
+    var date = getLastDate();
     return date.getFullYear().toString();
 };
 
