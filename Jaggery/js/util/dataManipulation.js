@@ -361,19 +361,22 @@ var getPrevQuarterData = function(databaseType,quarter){
 
     if(quarter!=1){
         var queryResult;
-        var previousQuarterData = {
-            "previousYear" : {
-                "year" : "",
-                "quarter" : 0,
-                "columnData" : {}
-            },
-            "thisYear" : {
-                "year" : "",
-                "quarter" : 0,
-                "columnData" : {}
-            }
-        };
+        
         for(var i = 1; i < quarter;i++){
+
+        	var previousQuarterData = {
+            	"previousYear" : {
+                	"year" : "",
+                	"quarter" : 0,
+                	"columnData" : {}
+            	},
+            	"thisYear" : {
+                	"year" : "",
+                	"quarter" : 0,
+                	"columnData" : {}
+            	}
+        	};
+        	
             queryResult = db.query("SELECT * FROM `" + databaseType + "_Quarterly` WHERE `year` = " + previousYear +
                                                                                             " AND `quarter` = " + i);
 
